@@ -64,20 +64,32 @@
 2. **partition1**挂载在根目录/，**partition2**挂载在/home。所以/home内各**次目录**的数据都是放在partition2的，如果不是放在/home下面的目录，则数据放在partition1。
 3. **挂载只对应目录**，不对应文件。
 # 基础操作
-1. 显示日期的命令：date
-    + date +%Y/%m/%d 
-    + date +%H:%M
-2. 重要的热键
-    + [Tab]  命令补全，文件补齐
-    + [Ctrl]-c 终端目前程序的按键
-    + [Ctrl]-d 键盘输入结束（End Of File 或 End Of Input）
-3. 在线求助
-    + man命令
-        + man 7 ${command} 获得详细的说明
-        + 向下翻页：空格键、[Page Down]
-        + 向上翻页：[Page Up]
-        + 去到第一页：[Home]
-        + 去到最后一页：[End]
-        + 向下查询string字符串：/string；用n键继续字符串的下一个查询
-        + 向上查询string字符串：?string；用N键继续字符串的上一个查询
-        + 退出：q
++ 显示日期的命令：date
+1. date +%Y/%m/%d 
+2. date +%H:%M
++ 重要的热键
+1. [Tab]  命令补全，文件补齐
+2. [Ctrl]-c 终端目前程序的按键
+3. [Ctrl]-d 键盘输入结束（End Of File 或 End Of Input）
++ 在线求助 man命令
+1. man 7 ${command} 获得详细的说明
+2. 向下翻页：空格键、[Page Down]
+3. 向上翻页：[Page Up]
+4.  去到第一页：[Home]
+5.  去到最后一页：[End]
+6.  向下查询string字符串：/string；用n键继续字符串的下一个查询
+7.  向上查询string字符串：?string；用N键继续字符串的上一个查询
+8.  退出：q
++ 正确关机
+1. 数据同步写入磁盘：sync；将内存尚未被更新的数据写入硬盘，系统关机或重启之前最好多执行几次
+2. 重启、关机命令
+    + `sync;sync;sync;reboot`
+    + `shutdown -h now`
+    + `poweroff -f`
+3. 切换执行等级init
+    + Linux**系统运作的模式**共有7种
+        + run level 0:关机
+        + run level 3：纯命令行模式
+        + run level 5：含有图形界面模式
+        + run level 6：重启
+    + 关机命令 `init 0`
