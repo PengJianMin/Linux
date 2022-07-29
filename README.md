@@ -25,8 +25,16 @@
 # 磁盘分区
 + IDE接口
 1. IDE接口有两个：IDE1(Primary),IDE2(Secondary)，每个接口可以连接2个IDE设备，一共可以连接4个IDE设备。
-2. 设备的名称与接口位置绑定：
+2. 设备文件名与接口**物理位置**绑定：
     + IDE1-Primary(Master):/dev/hda
     + IDE1-Secondary(Slave) /dev/hdb
     + IDE2-Primary(Master):/dev/hdc
     + IDE2-Secondary(Slave) /dev/hdd
++ SATA接口
+1. 设备文件名**以Linux内核检测到的顺序**决定，**与插槽的物理位置无关**。 如：/dev/sda;/dev/sdb...
++ 磁盘组成
+1. 磁盘扇区大小固定（512Bytes）
+2. 整块磁盘第一块扇区纪录了两个重要信息
+    + 主引导分区（Master Boot Record,MBR）,可以存储**引导加载程序**，有446bytes。**系统开机的时候会主动去读取这个区块的内容**
+    + 分区表，纪录整块硬盘分区的状态，有64bytes。
+    + 
