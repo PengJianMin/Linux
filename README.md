@@ -74,3 +74,10 @@
 3. 在线求助
     + man命令
         + man 7 ${command} 获得详细的说明
+        + 向下翻页：空格键、[Page Down]
+        + 向上翻页：[Page Up]
+        + 去到第一页：[Home]
+        + 去到最后一页：[End]
+        + 向下查询string字符串：/string；用n键继续字符串的下一个查询
+        + 向上查询string字符串：?string；用N键继续字符串的上一个查询
+        + 退出：q
