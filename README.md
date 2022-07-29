@@ -23,5 +23,10 @@
 # Linux思想
 1. Linux一切皆文件。
 # 磁盘分区
-1. IDE接口
-    1. IDE接口有两个
++ IDE接口
+1. IDE接口有两个：IDE1(Primary),IDE2(Secondary)，每个接口可以连接2个IDE设备，一共可以连接4个IDE设备。
+2. 设备的名称与接口位置绑定：
+    + IDE1-Primary(Master):/dev/hda
+    + IDE1-Secondary(Slave) /dev/hdb
+    + IDE2-Primary(Master):/dev/hdc
+    + IDE2-Secondary(Slave) /dev/hdd
