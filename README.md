@@ -1,8 +1,8 @@
 # Linux
-+ [计算机概论](https://github.com/PengJianMin/Linux/edit/main/README.md#%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%A6%82%E8%AE%BA)
-+ [Linux思想](https://github.com/PengJianMin/Linux/edit/main/README.md#linux%E6%80%9D%E6%83%B3)
-+ [磁盘分区](https://github.com/PengJianMin/Linux/edit/main/README.md#%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA)
-+ [基础操作](https://github.com/PengJianMin/Linux/edit/main/README.md#%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C)
++ [计算机概论](https://github.com/PengJianMin/Linux#%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%A6%82%E8%AE%BA)
++ [Linux思想](https://github.com/PengJianMin/Linux#linux%E6%80%9D%E6%83%B3)
++ [磁盘分区](https://github.com/PengJianMin/Linux#%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA)
++ [基础操作](https://github.com/PengJianMin/Linux#%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C)
 # 计算机概论
 + 文件大小使用**二进制**，速度单位使用**十进制**
 1. 文件大小：1 KB = 1024 B = 2^10 B
