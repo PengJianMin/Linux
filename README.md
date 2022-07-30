@@ -336,3 +336,16 @@
     + swapon 启用内存交换空间
     + 最多创建32个swap
     + 64位最大内存寻址到64GB，swap总量最大也是仅能达64GB。
+# 文件与文件系统的压缩与打包（文件系统也可以打包）
+1. tar 
+    + `tar -vtf` 
+    + `tar -xvf  -C ` 
+    + `tar -cvf `
+    +  `tar -cvf --exclude= `
+3. dump：完整备份工具
+4. restore：恢复数据
+5. dd：读取磁盘设备的内容，将整个设备备份成一个**文件**。
+    + `dd if="input file" of="output file" bs="blocksize"`
+    + `dd if=/etc/passwd of = /tmp/passwd.back`
+    + `dd if=/dev/zero of=/tmp/elesev bs=1M count=128`
+    + 
