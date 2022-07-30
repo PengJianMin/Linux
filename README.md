@@ -343,9 +343,12 @@
     + `tar -cvf `
     +  `tar -cvf --exclude= `
 3. dump：完整备份工具
+    + `dump -S /dev/hdc1`
+    + `dump -W`
+    + `dump -0j -f /root/etc.dump.bz2 /etc`
 4. restore：恢复数据
+    + `restore -t -f /root/boot.dump`
 5. dd：读取磁盘设备的内容，将整个设备备份成一个**文件**。
     + `dd if="input file" of="output file" bs="blocksize"`
     + `dd if=/etc/passwd of = /tmp/passwd.back`
     + `dd if=/dev/zero of=/tmp/elesev bs=1M count=128`
-    + 
