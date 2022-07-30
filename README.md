@@ -83,6 +83,7 @@
 + 正确关机
 1. 数据同步写入磁盘：sync；将内存尚未被更新的数据写入硬盘，系统关机或重启之前最好多执行几次
 2. 重启、关机命令
+    + 以下命令在执行前都会进行sync命令的调用
     + `sync;sync;sync;reboot`
     + `shutdown -h now`
     + `poweroff -f`
