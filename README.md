@@ -253,3 +253,10 @@
     + 通过chmod命令更改，在之前的三个数字前**再加上一个数字**，该数字代表特殊权限。 `chmod 6755 test` 
 10. 查看文件类型
     + file：`file /usr/bin/passwd`
+11. 寻找“执行文件”
+    + which：默认查找PATH内所规范的目录 `which cd`
+12. 文件名的查找
+    + 通常先使用`whereis`或者`locate`来检查，速度更快，查不到了再用`find`
+    + `whereis`和`locate`查找**数据库/var/lib/mlocate**，`find`查找硬盘
+    + 更新locate数据库命令 `updatedb`
+    + find：`find / -name passwd` `find /var -type f` `find / -perm 555` `find / -size +1000k` `find ./ -name "*.log" -exec rm -rf {}\;` `find / -atime +4`
