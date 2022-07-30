@@ -262,3 +262,15 @@
     + 更新locate数据库命令 `updatedb`
     + find：`find / -name passwd` `find /var -type f` `find / -perm 555` `find / -size +1000k` `find ./ -name "*.log" -exec rm -rf {}\;` `find / -atime +4`
         + \-exec：对查找结果进行**额外动作**，`{}`表示其中查找结果中的一条纪录，必须以`\;`结尾
+# linux磁盘与文件系统管理
+1. 文件系统的运行：
+    + super block：纪录此文件系统的**整体信息**，包括index/block的总量、使用量、剩余量，以及文件系统的格式与相关信息等。
+    + i-node：记录文件的**属性**，一个文件占用一个i-node，同时记录此文件的**数据所在的block号码**；
+    + block：实际记录文件的内容，若文件太大时，会占用多个block。
+    + 如果能找到文件的i-node的话，就能知道这个文件所放置的block号码，就能读出该文件的实际数据了。
+    + Ext2为索引式文件系统。
+    + FAT格式文件系统（U盘、闪存）**没有i-node存在**，每个block号码都记录在前一个block当中，类似链表，读取效率差，会导致**磁盘碎片**
+2. Ext2文件系统
+    + data block
+        + 大小有：1KB 2KB 4KB
+        + 
