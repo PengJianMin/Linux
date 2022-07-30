@@ -162,7 +162,7 @@
     + PATH（**一定是大写**），变量内容是一堆目录，每个目录用冒号（:）隔开，每个目录是有**顺序**之分的。
     + 安全起见，不建议将 . 加入PATH的查询目录中。
 4. 文件与目录管理
-    + ls：查看文件与目录: `ls -al` `ll` `ls --full-time` `ls --time=atime` `ls --time=ctime`
+    + ls：查看文件与目录 `ls -al` `ll` `ls --full-time` `ls --time=atime` `ls --time=ctime`
         + \-a: 显示全部文件，连同隐藏文件（开头为 . 的文件）。
         + \-d：仅列出目录
         + \-l：列出文件属性与权限等数据
@@ -170,4 +170,24 @@
         + \-R：子目录递归输出
         + \-S：以文件**容量**大小排序
         + \-t：以时间排序
-        
+    + cp：复制文件 `cp -a source destination`
+        + 复制文件需要有**read权限**
+        + 默认条件中，cp的源文件与目的文件的**权限是不同的**，目的文件的**所有者**通常会是命令操作者本身。
+        + \-a：等于 \-pdr
+        + \-d：若源文件为连接文件，则复制连接文件属性而非文件本身
+        + \-p：连同文件的属性一起复制过去
+        + \-r：递归持续复制         
+    + 软连接与硬链接（更详细信息见后续相关章节）
+        + 软连接（symbolic link）相当与快捷方式，直接删除不影响源文件。
+        + 硬链接（hard link）相当与直接关联源文件的存储区块，本质上关联与源文件相同的i-node（所以权限参数中会有i-node关联数），直接删除会影响源文件。
+    + rm：移除文件或目录 `rm -f` `rm -rf` 
+        + \-f：强制删除force
+        + \-r：递归删除
+    + mv：移动文件与目录，或**更名** `mv old new`
+        + rename同样可以更名
+    + basename：取得路径的文件名与目录名称 `basename path` `dirname path`
+        + basename 取得路径的最后一项 basename /etc/sysconfig/network  --> network
+        + dirname 除去路径的最后一项剩下的 dirname /etc/sysconfig/network --> /etc/sysconfig
+        + 一般在写程序的时候使用
+5. 文件**内容**查阅
+    + 
