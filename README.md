@@ -10,7 +10,7 @@
 3. CPU频率 = 外频 * 内频
 + 32位和64位
 1. 术语叫**字组大小**
-2. 代表一次可以在内存寻址的范围：32位 ==> 2^32 ==> 2^2 * 2^10 * 2^10 * 2^10 ==> 4G, 32位的CPU最多只能支持4G的内存，多了没用。
+2. 代表一次可以在内存寻址的范围：32位 ➡️  2^32 ➡️  2^2 * 2^10 * 2^10 * 2^10 ➡️  4G, 32位的CPU最多只能支持4G的内存，多了没用。
 + CMOS和BIOS
 1. CMOS类似内存，是**存储器**，需要有电源支持，主要纪录主板上面的重要参数（系统时间、CPU电压与频率、各项设备的I/O地址与IRQ等）
 2. BIOS是**程序**，加载CMOS中的参数，调用存储设备中的开机程序，进入操作系统中。
@@ -186,8 +186,8 @@
     + mv：移动文件与目录，或**更名** `mv old new`
         + rename同样可以更名
     + basename：取得路径的文件名与目录名称 `basename path` `dirname path`
-        + basename 取得路径的最后一项 basename /etc/sysconfig/network  --> network
-        + dirname 除去路径的最后一项剩下的 dirname /etc/sysconfig/network --> /etc/sysconfig
+        + basename 取得路径的最后一项 basename /etc/sysconfig/network  ➡️  network
+        + dirname 除去路径的最后一项剩下的 dirname /etc/sysconfig/network ➡️  /etc/sysconfig
         + 一般在写程序的时候使用
 5. 文件**内容**查阅
     + cat：由第一行开始显示内容 `cat -n` `cat -b` `cat -E` `cat -A` 
@@ -218,3 +218,20 @@
     + tail：取出后面几行 `tail -n 100` `tail -n +100` `tail -f log.txt`
         + **正数**指第100行**以后**的所有数据
         + \-f：监测日志文件，**常用于查看是否有请求打进来**。
+    + od：非纯文本文件（如二进制文件binary） `od -t c /usr/bin/passwd`
+7. 文件时间
+    + mtime：内容数据更改时间
+    + ctime：文件状态（权限、属性等等）更改时间
+    + atime：文件内容被取用时间，读取时间。（cat命令会更新这个时间） 
+    + touch：修改文件时间或**创建新文件** `touch newfile.txt` `touch -a` `touch -c` `touch -m` 
+8. 文件与目录的**默认权限**与**隐藏属性**
+    + chattr设置，lsattr查看，只在**Ext2/Ext3**的文件系统上生效
+    + umask：设置文件默认权限 `umask 022`
+        + 文件默认权限 rw-rw-rw- 666
+        + 目录默认权限 rwxrwxrwx 777
+        + umask指的是默认值需要**减掉**的权限
+        + 新建文件：rw-rw-rw-(666) **-** ----w--w-(022) ➡️ rw-r--r--(644)
+        + 新建目录：rwxrwxrwx(777) **-** ----w--w-(022) ➡️ rwxr-xr-x(755)
+    +chattr：设置文件的隐藏属性（**很多只能是root才能设置**）`chattr +a` ` chattr -a` `chattr +i` `chattr -i`
+        + a 文件只能增加数据，不能删除和修改数据
+        + i 文件不能删除、改名、设置连接、修改数据等等，直接锁死
