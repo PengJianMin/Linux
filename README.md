@@ -415,6 +415,14 @@
             + r键 修改nice指
         + pstree：显示进程树
             + 所有的进程都是依附在**init进程**下面，这个进程的**PID是1号**，是由Linux内核主动调用的第一个进程。
+        + kill：管理进程，帮助我们将signal传送给**某个工作（%jobnumber）**或者是**某个PID（直接输入数字）** `kill -SIGKILL %1` `kill -SIGKILL 12345`
+            + SIGHUP 1：让PID重新读取自己的配置文件，类似重新启动
+            + SIGINT 2：相当于[Ctrl]-c，中断一个进程的进行
+            + SIGKILL 9：强制中断一个进程
+            + SIGTERM 15：以正常的结束进程来终止该进程
+            + SIGSTOP 17：相当于[Ctrl]-z，暂停一个进程的进行
+        + killall：通过**命令名称**发送信号，不需要查找PID或%jobnumber。`killall -1 httpd` `killall -9 httpd`
+        
 6. 僵尸进程
     + 某个进程的CMD后面还街上< defunct > ，代表该进程是僵尸进程
     + 成因：进程已经执行完毕，或者因故应该要终止了，父进程却无法完整将该进程结束掉，造成进程一直存在内存当中。
