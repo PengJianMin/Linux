@@ -307,13 +307,14 @@
         + 对*该分区*进行格式化（format），以创建系统可用的文件系统
         + 对刚才新建好的文件系统进行检验
         + 在Linux系统上，创建挂载点（也即目录），并将它挂载上来
-    + fdisk：**磁盘分区**，**只有root权限**才可以执行，设备名**不带数字**。 `fdisk /dev/hdc` `fdisk -l /dev/hdc 该命令仅查看信息，不操作磁盘`
+    + fdisk：**磁盘分区**，**只有root权限**才可以执行，设备名**不带数字**。 `fdisk /dev/hdc` `fdisk -l /dev/hdc 该命令仅查看信息，不操作磁盘` `partprobe`
         + m：命令介绍
         + d：删除一个分区
         + n：新增一个分区
         + p：显示分区表
         + q：退出，之前的所有操作**都不生效**
         + w：写入分区表，之前的所有操作**都生效**
+        + **partprobe** w后要强制让**内存**更新分区表。
     + mkfs：进行**文件系统的格式化**，设备名**带数字**，表示对某一分区格式化文件系统。 `mkfs -t ext3 /dev/hdc6`
     + mke2fs：可以制定blcok大小和i-node数量,设备名**带数字**。`mke2fs -j -L "test" -b 2048 -i 8192 /dev/hdc6`
     + fsck,badblocks：**磁盘检验**，设备名**带数字** `fsck -C -f -t ext3 /dev/hdc6` `badlocks -sv /dev/hdc6`
@@ -325,3 +326,13 @@
         + \-l：显示目前挂载的信息
         + \-L：利用**卷标名称**进行挂载
     + e2label：设置**文件系统卷标**（Lable）`e2label /dev/hdc6 "elesev"`
+6. 开机挂载
+    + 关机后**挂载失效**，开机后系统**自动进行挂载**。
+    + /etc/fstab(file system table)是mount命令执行时，所有参数会写入的文件。
+    + 每次开机会根据/etc/fstab中的配置自动进行挂载，可以**直接编辑**此文件。
+    + /etc/fstab输入有误导致无法开机成功，进入**单用户维护模式**。 使用命令`mount -n -o remount,rw /`，再重新编辑/etc/fstab
+7. 内存交换空间（swap）的构建 `mkswap /dev/hdc7` `free -h` `free -m` `swapon /dev/hdc7` 
+    + swap是**利用硬盘**来暂时存放**内存**中的信息。
+    + swapon 启用内存交换空间
+    + 最多创建32个swap
+    + 64位最大内存寻址到64GB，swap总量最大也是仅能达64GB。
