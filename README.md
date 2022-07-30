@@ -352,3 +352,15 @@
     + `dd if="input file" of="output file" bs="blocksize"`
     + `dd if=/etc/passwd of = /tmp/passwd.back`
     + `dd if=/dev/zero of=/tmp/elesev bs=1M count=128`
+# Linux账号管理与ACL权限设置（未完成）
+# 软件磁盘阵列（Software RAID）（未完成）
+# 逻辑卷管理器（Logical Volume Manager）（未完成）
+# 例行性工作（crontab）（未完成）
+# 程序管理与SELinux初探
+1. for-and-exec流程
+    + 系统先以fork的方式复制一个与父进程相同的**暂存进程**，这个进程与父进程**唯一的区别**就是PID不同。
+    + 这个暂存进程还会多一个**PPID参数（父进程的进程标识符）**
+    + 然后暂存进程以exec的方式加载实际要执行的程序。
+2. 服务（daemon）：常驻在内存当中的进程
+3. **工作管理**
+    + 
