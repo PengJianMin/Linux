@@ -307,11 +307,17 @@
         + 对*该分区*进行格式化（format），以创建系统可用的文件系统
         + 对刚才新建好的文件系统进行检验
         + 在Linux系统上，创建挂载点（也即目录），并将它挂载上来
-    + fdisk：磁盘分区，**只有root权限**才可以执行。 `fdisk /dev/hdc` `fdisk -l /dev/hdc 该命令仅查看`
+    + fdisk：**磁盘分区**，**只有root权限**才可以执行，设备名**不带数字**。 `fdisk /dev/hdc` `fdisk -l /dev/hdc 该命令仅查看信息，不操作磁盘`
         + m：命令介绍
         + d：删除一个分区
         + n：新增一个分区
         + p：显示分区表
         + q：退出，之前的所有操作**都不生效**
         + w：写入分区表，之前的所有操作**都生效**
-        
+    + mkfs：进行**文件系统的格式化**，设备名**带数字**，表示对某一分区格式化文件系统。 `mkfs -t ext3 /dev/hdc6`
+    + mke2fs：可以制定blcok大小和i-node数量,设备名**带数字**。`mke2fs -j -L "test" -b 2048 -i 8192 /dev/hdc6`
+    + fsck,badblocks：**磁盘检验**，设备名**带数字** `fsck -C -f -t ext3 /dev/hdc6` `badlocks -sv /dev/hdc6`
+    + mount,umount：**磁盘挂载与卸载**，设备名**带数字** `mount -a` `mount /dev/hdc6 /home/elesev` `mount -l` `umount /home/elesev` `umount /dev/hdc6` `mount -L "elesev" /home/elesev`
+        + 单一文件系统不应该被重复挂载在不同的挂载点（目录）
+        + 单一目录不应该重复挂载多个文件系统
+        + 作为挂载点的目录理论上应该都是**空目录**
