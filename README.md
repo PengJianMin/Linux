@@ -260,3 +260,4 @@
     + `whereis`和`locate`查找**数据库/var/lib/mlocate**，`find`查找硬盘
     + 更新locate数据库命令 `updatedb`
     + find：`find / -name passwd` `find /var -type f` `find / -perm 555` `find / -size +1000k` `find ./ -name "*.log" -exec rm -rf {}\;` `find / -atime +4`
+        + \-exec：对查找结果进行**额外动作**，`{}`表示其中查找结果中的一条纪录，必须以`\;`结尾
