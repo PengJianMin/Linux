@@ -339,9 +339,9 @@
 # 文件与文件系统的压缩与打包（文件系统也可以打包）
 1. tar 
     + `tar -vtf` 
-    + `tar -xvf  -C ` 
-    + `tar -cvf `
-    +  `tar -cvf --exclude= `
+    + `tar -xvzf  -C ` 
+    + `tar -czvf `
+    +  `tar -czvf --exclude= `
 3. dump：完整备份工具
     + `dump -S /dev/hdc1`
     + `dump -W`
