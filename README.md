@@ -273,4 +273,12 @@
 2. Ext2文件系统
     + data block
         + 大小有：1KB 2KB 4KB
-        + 
+        + 文件大小大于block的大小，则一个文件会占用多个block数量
+        + 文件大小小于block的大小，则该block剩余空间就不能够再被利用（**磁盘空间浪费**）
+    + i-node table
+        + 每个i-node大小均固定为 **128bytes**
+        + 记录一个block号码要花费**4bytes**
+    + i-node/block与**文件大小**的关系
+        + 一个i-node分为**4个区域**
+            + 12个直接记录器
+            + 
