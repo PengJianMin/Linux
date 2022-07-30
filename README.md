@@ -286,3 +286,5 @@
             + 1个**双间接记录区**：记录1个block号码，这1个block的数据依然是block号码，再往下的block依然记录的是block号码。1 * (1KB/4B) * (1KB/4B) * 1KB = 256 * 256 KB
             + 1个**三间接记录区**: 记录1个block号码，这1个block的数据依然是block号码，再往下的block依然记录的是block号码，再再往下的block依然记录的是block号码。1 * (1KB/4B) * (1KB/4B) * (1KB/4B) * 1KB = 256 * 256 * 256 KB
             + 总额：12 + 256 + 256 * 256 + 256 * 256 * 256 = 16GB，所以如果将data block设置成1KB的话，文件系统能够容纳的**最大文件**为16GB。 
+    + dumpe2fs：查看设备的文件系统信息 `dumpe2fs /dev/hdc2`
+    + df：调出目前挂载的设备 `df -h` `df -h /` 
