@@ -474,6 +474,7 @@
         + id：闲置的状态
         + wa：等待I/O所耗费的CPU状态
         + st：被**虚拟机**所盗用的CPU的状态
-+ /proc/*
++ /proc/* `cat /proc/${PID}/cmdline` `cat /proc/${PID}/environ`
 1. 进程在内存中，内存中数据写入到/proc/* 目录下
-2. 
+2. **cmdline**：启动进程的**命令串**
+3. environ：进程的环境变量内容
