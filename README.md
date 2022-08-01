@@ -484,8 +484,28 @@
 3. pidof：找出某个正在执行的进程的PID `pidof init` `pidof httpd`
 + SELinux初探（未完成）
 # 认识系统服务（daemons）
-1. daemon是程序，service是服务。一般说法是：实现了某种service功能的daemon程序。
-2. daemon分类：
-    + stand_alone：此daemon可以自行单独启动服务，一直占用内存和系统资源**持续**对外提供服务。
-    + super daemon：通过一个**统一的daemon**来负责唤起服务。没有客户端请求时，各项服务都是未启动。等到有客户端请求时，super daemon才**唤醒**相对应的服务，客户端请求结束后，服务也会关闭并释放系统资源。**优点**：super daemon具有安全控管的机制；**缺点**：服务加载到内存需要时间，响应时间稍慢。（**telnet**是由super daemon管理）
-3. daemon命名规则：服务名称后加上“d”，如httpd。
++ daemon是程序，service是服务。一般说法是：实现了某种service功能的daemon程序。
++ daemon分类：
+1. stand_alone：此daemon可以自行单独启动服务，一直占用内存和系统资源**持续**对外提供服务。
+2. super daemon：通过一个**统一的daemon**来负责唤起服务。没有客户端请求时，各项服务都是未启动。等到有客户端请求时，super daemon才**唤醒**相对应的服务，客户端请求结束后，服务也会关闭并释放系统资源。**优点**：super daemon具有安全控管的机制；**缺点**：服务加载到内存需要时间，响应时间稍慢。（**telnet**是由super daemon管理）
++ daemon命名规则：服务名称后加上“d”，如httpd。
++ /etc/services：记录服务与端口号之间对应关系的文件
+1. http 80
+2. ftp 21
+3. ssh 22
+4. mysql 3306
+5. ...
++ daemon的**启动脚本**与**启动方式**
+1. 启动脚本（shell script）和配置文件存放目录
+    + /etc/init.d/* ：启动脚本放置处，是**公认**的目录
+    + /etc/sysconfig/* ：各服务的**初始化**环境配置文件
+        + /etc/sysconfig/syslog
+        + /etc/sysconfig/network
+    + /etc/xinetd.conf,/etc/xinetd/* ：super daemon配置文件
+    + /etc/* ：各服务各自的配置文件
+    + /var/lib/* ：各服务产生的数据库
+        + /var/lib/mysql
+    + /var/run/* ：各服务的程序的PID记录处
+        + /var/run/syslogd.pid
+2. **Stand alone**的 **/etc/init.d启动** 
+3. **Super daemon**的启动方式 
