@@ -524,4 +524,4 @@
         + ldconfig：更新动态库
         + 允许进入的写在/etc/hosts.allow，不允许进入的写在/etc/hosts.deny，**以allow优先**。
  5. 设置服务**在开机时**启动
-    +chkconfig：管理系统服务**开机时**是否启动 `chkconfig --list` `chkconfig --level 3 httpd on 让httpd这个服务在run level为3的时候启动` `chkconfig rsync off` `chkconfig --add myTestServer 将我的服务加入chkconfig的管理中，该服务必须可以通过init.d启动`
+    + chkconfig：管理系统服务**开机时**是否启动 `chkconfig --list` `chkconfig --level 3 httpd on 让httpd这个服务在run level为3的时候启动` `chkconfig rsync off` `chkconfig --add myTestServer 将我的服务加入chkconfig的管理中，该服务必须可以通过init.d启动`
