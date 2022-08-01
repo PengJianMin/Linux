@@ -480,4 +480,4 @@
 3. environ：进程的环境变量内容
 + 查询**已打开**文件或**已执行程序打开**的文件
 1. fuser：通过**文件（或文件系统）** 找出 **正在使用该文件的程序** `fuser -k /dev/pts/${user_id} 清理终端（停止用户登录）`  `fuser -v ${file}`
-2. lsof：列出被进程所打开的文件名 `lsof |  grep dele | awk -F " " '{print $NF}' | xargs kill -9 ` `lsof -p $pid` `lsof -i:$port`
+2. lsof：列出被进程所打开的文件名 `lsof |  grep dele | awk -F " " '{print $NF}' | xargs kill -9 ` `lsof -p $pid` `lsof -i:$port` `lsof -u root -a -U` `lsof -u root | grep bash`
