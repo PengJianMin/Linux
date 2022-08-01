@@ -497,7 +497,7 @@
 5. ...
 + daemon的**启动脚本**与**启动方式**
 1. 启动脚本（shell script）和配置文件存放目录
-    + /etc/init.d/* ：启动脚本放置处，是**公认**的目录
+    + /etc/init.d/* ：**启动脚本（可执行文件）** 放置处，是**公认**的目录
     + /etc/sysconfig/* ：各服务的**初始化**环境配置文件
         + /etc/sysconfig/syslog
         + /etc/sysconfig/network
