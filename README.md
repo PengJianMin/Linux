@@ -525,3 +525,23 @@
         + 允许进入的写在/etc/hosts.allow，不允许进入的写在/etc/hosts.deny，**以allow优先**。
  5. 设置服务**在开机时**启动
     + chkconfig：管理系统服务**开机时**是否启动 `chkconfig --list` `chkconfig --level 3 httpd on 让httpd这个服务在run level为3的时候启动` `chkconfig rsync off` `chkconfig --add myTestServer 将我的服务加入chkconfig的管理中，该服务必须可以通过init.d启动`
+# 认识与分析日志文件
++ 用于日志文件的服务种类：
+1. syslogd：主要记录系统与网络服务的信息（所**配置的服务**）
+2. klogd：主要记录内核产生的各项信息
+3. logrotate：主要进行日志文件的**轮替**功能
++ syslogd：一个好的系统管理员要**经常去“巡视”日志文件**的内容。 `ps aux | grep syslog 检查是否启动syslogd` `chkconfig --list syslog 检查是否设置开机启动`
+1. 日志格式
+    + 时间发生的日期与时间
+    + 发生此时间的主机名
+    + 启动此事件的**服务名称（如samba，xinetd等）** 或 **函数名称（如libpam）**
+    + 该信息的实际数据内容
+2./etc/syslog.conf：syslog的配置文件
+    + `mail.info /var/log/maillog_info ` mail服务产生的大于等于info等级的信息，都记录到var/log/maillog_info**文件**中
+    + 服务名称：例如 mail auth cron daemon kern等
+    + 信息等级： info notice warning(warn) err(error) crit alert emerg(panic)
+    + 链接符号：
+        + “.”代表比后面**还要高**的等级（含该等级）都被记录下来
+        + “=”所需要的等级就是后面接的等级而已，**其他的不要**
+        + “.!”代表不等于，除了该等级，**其他都要**
+        
