@@ -336,101 +336,100 @@
 3. 最多创建32个swap
 4. 64位最大内存寻址到64GB，swap总量最大也是仅能达64GB。
 # 文件与文件系统的压缩与打包（文件系统也可以打包）
-1. tar 
-    + `tar -vtf` 
-    + `tar -xvzf  -C ` 
-    + `tar -czvf `
-    +  `tar -czvf --exclude= `
-3. dump：完整备份工具
-    + `dump -S /dev/hdc1`
-    + `dump -W`
-    + `dump -0j -f /root/etc.dump.bz2 /etc`
-4. restore：恢复数据
-    + `restore -t -f /root/boot.dump`
-5. dd：读取磁盘设备的内容，将整个设备备份成一个**文件**。
-    + `dd if="input file" of="output file" bs="blocksize"`
-    + `dd if=/etc/passwd of = /tmp/passwd.back`
-    + `dd if=/dev/zero of=/tmp/elesev bs=1M count=128`
++ tar 
+1. `tar -vtf` 
+2. `tar -xvzf  -C ` 
+3. `tar -czvf `
+4.  `tar -czvf --exclude= `
++ dump：完整备份工具
+1. `dump -S /dev/hdc1`
+2. `dump -W`
+3. `dump -0j -f /root/etc.dump.bz2 /etc`
++ restore：恢复数据
+1. `restore -t -f /root/boot.dump`
++ dd：读取磁盘设备的内容，将整个设备备份成一个**文件**。
+1. `dd if="input file" of="output file" bs="blocksize"`
+2. `dd if=/etc/passwd of = /tmp/passwd.back`
+3. `dd if=/dev/zero of=/tmp/elesev bs=1M count=128`
 # Linux账号管理与ACL权限设置（未完成）
 # 软件磁盘阵列（Software RAID）（未完成）
 # 逻辑卷管理器（Logical Volume Manager）（未完成）
 # 例行性工作（crontab）（未完成）
 # 程序管理与SELinux初探
-1. for-and-exec流程
-    + 系统先以fork的方式复制一个与父进程相同的**暂存进程**，这个进程与父进程**唯一的区别**就是PID不同。
-    + 这个暂存进程还会多一个**PPID参数（父进程的进程标识符）**
-    + 然后暂存进程以exec的方式加载实际要执行的程序。
-2. 服务（daemon）：常驻在内存当中的进程
-3. **工作管理（job control）**
-    + 进行工作管理的行为中，每个工作都是**目前bash的子进程**，彼此之间是有相关性的。
-    + &：直接将命令丢到后台中“执行”
-        + 这样不会被[Ctrl]+c中断，一定会执行
-        + 后台执行的命令，如果有stdout和stderr，依然是输出到屏幕上面，由于无法用[Ctrl]+c中断，很有可能导致屏幕被搞得花花绿绿的，此时用数据流重定向，将输出数据传送至某个文件中。`tar -czvf /tmp/etc.tgz /etc > /tmp/log.txt 2>&1 &`
-    + [Ctrl]+z：将目前的工作丢到后台中“暂停”
-    + jobs：查看目前的后台工作状态
-        + +：表示最近放到后台的工作号码，fg会先处理这个
-        + -：表示最近最后第二个放置到后台的工作号码
-    + fg(fore ground):将后台工作**拿到前台**来处理 `fg %1 工作号码为1的取出到前台处理`
-    + bg：让工作在**后台下**的状态变成执行中 `bg %3`
-    + kill：管理后台的工作 `kill -9 ${pid}` `kill -9 %2` `kill -SIGTERM %1`
-         + -9：**强制删除**一个不正常的工作
-         + -15：以**正常步骤**结束一项工作（15是默认值）
-4. 脱机管理问题（退出bash后，任务会被中断掉）
-    + nohup：脱机或注销系统后，工作继续进行。 `nohup ./tesh.sh &`
-5. 进程的查看
-    + ps：将某个时间点的进程运行情况选取下来
-        + `ps -l`：仅查看自己的bash相关进程
-            + F:4(root) 1(此子进程仅可进行复制fork而无法实际执行exec）
-            + S：进程状态（STAT）
-                + R(Running)：进程正在运行
-                + S(Sleep)：进程处于睡眠状态，但可以被**唤醒**
-                + D：不可以被唤醒，可能在等待I/O
-                + T：停止状态，可能在工作控制（后台暂停）或除错（trace）状态
-                + Z(Zombie)：进程已经终止，却无法被**删除至内存外**。
-            + UID/PID/PPID：编号
-            + C：CPU使用率，单位为百分比
-            + PRI/NI：Priority/Nice缩写，CPU执行优先级，数值越小表示该进程越快被CPU执行
-            + ADDR/SZ/WCHAN：都与内存有关
-            + TTY：登陆者的终端机位置
-            + TIME：**使用掉**的CPU时间，即此进程实际**花费CPU运行的时间**，不是系统时间
-            + CMD：触发进程的命令
-        + `ps aux`：查看系统所有进程，默认按照PID的顺序排序显示
-            + USER：进程所属用户
-            + PID：进程标识符
-            + %CPU：使用掉的CPU资源百分比
-            + %MEM：所占用的**物理内存**百分比
-            + VSZ：使用掉的**虚拟内存量**（KB）
-            + RSS：占用的**固定内存量**（KB）
-            + TTY：终端机
-            + STAT：进程状态（R/S/T/Z）
-            + START:进程被触发启动的时间
-            + TIME：进程**实际使用**CPU运行的时间
-            + COMMAND：进程的实际命令
-        + top：持续监测进程运行的状态（实时）
-            + load average：系统在1,5,15分钟的**平均工作负载**。
-            + 默认使用CPU使用率（%CPU）作为排序
-            + M键 按照内存使用率排序
-            + 1键 显示所有CPU核心
-            + r键 修改nice指
-        + pstree：显示进程树
-            + 所有的进程都是依附在**init进程**下面，这个进程的**PID是1号**，是由Linux内核主动调用的第一个进程。
-        + kill：管理进程，帮助我们将signal传送给**某个工作（%jobnumber）**或者是**某个PID（直接输入数字）** `kill -SIGKILL %1` `kill -SIGKILL 12345`
-            + SIGHUP 1：让PID重新读取自己的配置文件，类似重新启动
-            + SIGINT 2：相当于[Ctrl]-c，中断一个进程的进行
-            + SIGKILL 9：强制中断一个进程
-            + SIGTERM 15：以正常的结束进程来终止该进程
-            + SIGSTOP 17：相当于[Ctrl]-z，暂停一个进程的进行
-        + killall：通过**命令名称**发送信号，不需要查找PID或%jobnumber。`killall -1 httpd` `killall -9 httpd`
-        
-6. 僵尸进程
-    + 某个进程的CMD后面还街上< defunct > ，代表该进程是僵尸进程
-    + 成因：进程已经执行完毕，或者因故应该要终止了，父进程却无法完整将该进程结束掉，造成进程一直存在内存当中。
-    + **init进程**是所有进程的父进程，会接管僵尸进程，如果init无法将僵尸进程删除，只能通过**reboot**的方法抹去进程。
-7. 进程的执行顺序（进程的**优先级**）
-    + PRI值由**内核动态调整**，用户无法直接调整PRI值，但可以调整nice值
-    + nice值
++ for-and-exec流程
+1. 系统先以fork的方式复制一个与父进程相同的**暂存进程**，这个进程与父进程**唯一的区别**就是PID不同。
+2. 这个暂存进程还会多一个**PPID参数（父进程的进程标识符）**
+3. 然后暂存进程以exec的方式加载实际要执行的程序。
++ 服务（daemon）：常驻在内存当中的进程
++ **工作管理（job control）**
+1. 进行工作管理的行为中，每个工作都是**目前bash的子进程**，彼此之间是有相关性的。
+2. &：直接将命令丢到后台中“执行”
+    + 这样不会被[Ctrl]+c中断，一定会执行
+    + 后台执行的命令，如果有stdout和stderr，依然是输出到屏幕上面，由于无法用[Ctrl]+c中断，很有可能导致屏幕被搞得花花绿绿的，此时用数据流重定向，将输出数据传送至某个文件中。`tar -czvf /tmp/etc.tgz /etc > /tmp/log.txt 2>&1 &`
+3. [Ctrl]+z：将目前的工作丢到后台中“暂停”
+4. jobs：查看目前的后台工作状态
+    + +：表示最近放到后台的工作号码，fg会先处理这个
+    + -：表示最近最后第二个放置到后台的工作号码
+5. fg(fore ground):将后台工作**拿到前台**来处理 `fg %1 工作号码为1的取出到前台处理`
+6. bg：让工作在**后台下**的状态变成执行中 `bg %3`
++ kill：管理后台的工作 `kill -9 ${pid}` `kill -9 %2` `kill -SIGTERM %1`
+1. -9：**强制删除**一个不正常的工作
+2. -15：以**正常步骤**结束一项工作（15是默认值）
++ 脱机管理问题（退出bash后，任务会被中断掉）
+1.nohup：脱机或注销系统后，工作继续进行。 `nohup ./tesh.sh &`
++ 进程的查看
+1. ps：将某个时间点的进程运行情况选取下来
+    + `ps -l`：仅查看自己的bash相关进程
+        + F:4(root) 1(此子进程仅可进行复制fork而无法实际执行exec）
+        + S：进程状态（STAT）
+            + R(Running)：进程正在运行
+            + S(Sleep)：进程处于睡眠状态，但可以被**唤醒**
+            + D：不可以被唤醒，可能在等待I/O
+            + T：停止状态，可能在工作控制（后台暂停）或除错（trace）状态
+            + Z(Zombie)：进程已经终止，却无法被**删除至内存外**。
+        + UID/PID/PPID：编号
+        + C：CPU使用率，单位为百分比
+        + PRI/NI：Priority/Nice缩写，CPU执行优先级，数值越小表示该进程越快被CPU执行
+        + ADDR/SZ/WCHAN：都与内存有关
+        + TTY：登陆者的终端机位置
+        + TIME：**使用掉**的CPU时间，即此进程实际**花费CPU运行的时间**，不是系统时间
+        + CMD：触发进程的命令
+    + `ps aux`：查看系统所有进程，默认按照PID的顺序排序显示
+        + USER：进程所属用户
+        + PID：进程标识符
+        + %CPU：使用掉的CPU资源百分比
+        + %MEM：所占用的**物理内存**百分比
+        + VSZ：使用掉的**虚拟内存量**（KB）
+        + RSS：占用的**固定内存量**（KB）
+        + TTY：终端机
+        + STAT：进程状态（R/S/T/Z）
+        + START:进程被触发启动的时间
+        + TIME：进程**实际使用**CPU运行的时间
+        + COMMAND：进程的实际命令
+2. top：持续监测进程运行的状态（实时）
+    + load average：系统在1,5,15分钟的**平均工作负载**。
+    + 默认使用CPU使用率（%CPU）作为排序
+    + M键 按照内存使用率排序
+    + 1键 显示所有CPU核心
+    + r键 修改nice指
+ 3. pstree：显示进程树
+    + 所有的进程都是依附在**init进程**下面，这个进程的**PID是1号**，是由Linux内核主动调用的第一个进程。
+ 4. kill：管理进程，帮助我们将signal传送给**某个工作（%jobnumber）**或者是**某个PID（直接输入数字）** `kill -SIGKILL %1` `kill -SIGKILL 12345`
+    + SIGHUP 1：让PID重新读取自己的配置文件，类似重新启动
+    + SIGINT 2：相当于[Ctrl]-c，中断一个进程的进行
+    + SIGKILL 9：强制中断一个进程
+    + SIGTERM 15：以正常的结束进程来终止该进程
+    + SIGSTOP 17：相当于[Ctrl]-z，暂停一个进程的进行
+5. killall：通过**命令名称**发送信号，不需要查找PID或%jobnumber。`killall -1 httpd` `killall -9 httpd`        
++ 僵尸进程
+    1. 某个进程的CMD后面还街上< defunct > ，代表该进程是僵尸进程
+    2. 成因：进程已经执行完毕，或者因故应该要终止了，父进程却无法完整将该进程结束掉，造成进程一直存在内存当中。
+    3. **init进程**是所有进程的父进程，会接管僵尸进程，如果init无法将僵尸进程删除，只能通过**reboot**的方法抹去进程。
++ 进程的执行顺序（进程的**优先级**）
+    1. PRI值由**内核动态调整**，用户无法直接调整PRI值，但可以调整nice值
+    2. nice值
         + root 可调整范围 -20~19
         + 一般用户 可调整范围 0~19
         + nice：**启动命令时**同时设置nice值 `nice -n -5 vim`
         + renice：**已经启动**的进程的nice重新调整 `renice 10 ${PID}`
-    + PRI(new) = PRI(old) + nice
+    3. PRI(new) = PRI(old) + nice
