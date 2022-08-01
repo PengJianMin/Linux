@@ -508,7 +508,13 @@
     + /var/run/* ：各服务的程序的PID记录处
         + /var/run/syslogd.pid
 2. **Stand alone**的 **/etc/init.d启动** `/etc/init.d/syslog status` `/etc/init.d/syslog restart` `/etc/init.d/crond restart`
-    + service：启动Stand alone的另一种方式，它是一个脚本，会分析service后边的参数，**再去/etc/init.d去取得**正确的服务来start或stop
+    + **service**：启动Stand alone的另一种方式，它是一个脚本，会分析service后边的**参数**，**再去/etc/init.d去取得**正确的服务来start或stop
         + `service --status-all`
         + `service crond restart`
 4. **Super daemon**的启动方式 
+    + **xinetd服务** 是一个super daemon，默认配置文件是/etc/xinetd.conf
+    + super daemon本身也是一个**Stand alone**的服务，自己也**常驻内存**
+    + super daemon自己启动的方式与Stand alone是**相同**的，但是它所管理的其他daemon则是通过**修改配置文件**来启动。
+        + `grep -i 'disable' /etc/xinetd.d/* ` 查看super daemon所管理的*未启动*的服务
+        + `vim /etc/xinetd.d/rsync`
+    
