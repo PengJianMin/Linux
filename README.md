@@ -433,3 +433,8 @@
     + nice：**启动命令时**同时设置nice值 `nice -n -5 vim`
     + renice：**已经启动**的进程的nice重新调整 `renice 10 ${PID}`
 3. PRI(new) = PRI(old) + nice
++ 检查系统资源
+1. free：查看内存使用情况 `free -h` `free -m`
+    + buffers：缓冲记忆
+    + cached：缓存
+    + 物理内存被用光是**正常的**（为了加速访问而将最近访问的数据放在内存），swap最好不要被使用。
