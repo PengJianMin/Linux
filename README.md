@@ -438,3 +438,39 @@
     + buffers：缓冲记忆
     + cached：缓存
     + 物理内存被用光是**正常的**（为了加速访问而将最近访问的数据放在内存），swap最好不要被使用。
+2. uname：查看系统与内核相关信息 `uname -a`
+3. uptime：查看系统启动时间与工作负载 `uptime`
+4. netstat：跟踪网络 `netstat -antupl` `netstat -tlnp`
+    + LocalAddress：本地的IP端口情况
+    + ForeignAddresss：远程主机的IP端口情况
+    + State：连接状态，主要有建立（ESTABLISHED）及监听(LISTEN)
+    + Path：连接到**此socket**的相关程序的路径，或者是相关数据输出的路径。
+5. dmesg：分析内核产生的信息 `dmesg|more` `dmesg| grep -i hd`  `dmesg |grep -i eth` 
+6. vmstat：监测系统资源变化 `vmstat 1 3` `vmstat 5` `vmstat -d`
+    + 进程字段procs：
+        + r：等待运行中的进程数量
+        + b：不可被唤醒的进程数量
+        + r和b越大，代表系统越忙碌
+    + 内存字段memory：
+        + swpd：虚拟内存被使用的大小
+        + free：未被使用的内存大小
+        + buff：用于缓冲存储器的内存大小
+        + cache：用于高速缓存的大小
+    + 内存交换空间swap：
+        + si：从磁盘进入内存的量
+        + so：从内存进入磁盘的量
+        + si/so：越大，系统性能越差
+    + 磁盘读写io
+        + bi：**磁盘写入**内存的**块数量**
+        + bo：内存**写入磁盘**的**块数量**
+        + 两者值越高，io越忙碌
+    + 系统system
+        + in：每秒被中断的进程数
+        + cs：每秒钟进行的事件切换数
+        + 两个数值越大，代表系统与**接口设备**的通信非常频繁，包括磁盘、网卡、时钟等等。
+    + CPU
+        + us：非内核层的CPU使用状态
+        + sy：内核层的CPU使用状态
+        + id：闲置的状态
+        + wa：等待I/O所耗费的CPU状态
+        + st：被**虚拟机**所盗用的CPU的状态
