@@ -507,5 +507,8 @@
         + /var/lib/mysql
     + /var/run/* ：各服务的程序的PID记录处
         + /var/run/syslogd.pid
-2. **Stand alone**的 **/etc/init.d启动** 
-3. **Super daemon**的启动方式 
+2. **Stand alone**的 **/etc/init.d启动** `/etc/init.d/syslog status` `/etc/init.d/syslog restart` `/etc/init.d/crond restart`
+    + service：启动Stand alone的另一种方式，它是一个脚本，会分析service后边的参数，**再去/etc/init.d去取得**正确的服务来start或stop
+        + `service --status-all`
+        + `service crond restart`
+4. **Super daemon**的启动方式 
