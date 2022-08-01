@@ -517,4 +517,10 @@
     + super daemon自己启动的方式与Stand alone是**相同**的，但是它所管理的其他daemon则是通过**修改配置文件**来启动。
         + `grep -i 'disable' /etc/xinetd.d/* ` 查看super daemon所管理的*未启动*的服务
         + `vim /etc/xinetd.d/rsync`
-    
+    + super daemon管理的服务可以**多一层**管理的手段来达成**类似防火墙的机制**。我们可以将某个系统服务**针对不同的客户端来源**指定不同的**权限** `vim /etc/xinetdd/rsync`
+    + 任何以**xinetd管理的服务**都可以通过 **/etc/hosts.allow,/etc/hosts.deny** 来设置防火墙
+    + 服务如果**支持TCP Wrappers函数**的功能，该服务业可以通过/etc/hosts.allow,/etc/hosts.deny来设置防火墙
+        + ldd(library dependency discovery)：查询某个**程序**的动态函数支持状态 `ldd httpd` `ldd sshd`
+        + ldconfig：更新动态库
+        + 允许进入的写在/etc/hosts.allow，不允许进入的写在/etc/hosts.deny，**以allow优先**。
+        + ``` nihao import package ```
