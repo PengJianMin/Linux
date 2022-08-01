@@ -482,3 +482,10 @@
 1. fuser：通过**文件（或文件系统）** 找出 **正在使用该文件的程序** `fuser -k /dev/pts/${user_id} 清理终端（停止用户登录）`  `fuser -v ${file}`
 2. lsof：列出被进程所打开的文件名 `lsof |  grep dele | awk -F " " '{print $NF}' | xargs kill -9 ` `lsof -p $pid` `lsof -i:$port` `lsof -u root -a -U` `lsof -u root | grep bash`
 3. pidof：找出某个正在执行的进程的PID `pidof init` `pidof httpd`
++ SELinux初探（未完成）
+# 认识系统服务（daemons）
+1. daemon是程序，service是服务。一般说法是：实现了某种service功能的daemon程序。
+2. daemon分类：
+    + stand_alone：此daemon可以自行单独启动服务，一直占用内存和系统资源**持续**对外提供服务。
+    + super daemon：通过一个**统一的daemon**来负责唤起服务。没有客户端请求时，各项服务都是未启动。等到有客户端请求时，super daemon才**唤醒**相对应的服务，客户端请求结束后，服务也会关闭并释放系统资源。**优点**：super daemon具有安全控管的机制；**缺点**：服务加载到内存需要时间，响应时间稍慢。（**telnet**是由super daemon管理）
+3. daemon命名规则：服务名称后加上“d”，如httpd。
