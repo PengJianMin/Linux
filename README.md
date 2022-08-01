@@ -544,4 +544,25 @@
         + “.”代表比后面**还要高**的等级（含该等级）都被记录下来
         + “=”所需要的等级就是后面接的等级而已，**其他的不要**
         + “.!”代表不等于，除了该等级，**其他都要**
-        
+3. 日志文件的安全性设置 `chattr +a /var/log/message 文件只增不可删` `chattr -a /var/log/message`
+4. **日志文件服务器**记录其他主机上的日志文件。客户端传送，服务端接收。
++ logrotate：将**旧的日志文件**移动成**旧文件**，并**新建一个空的文件作为新的日志文件**。
+1. logrotate挂在**cron**下面，在**规定的时间**到了才来进行日志文件的轮替。`/etc/cront.daily/logrotate`
+2. logrotate配置文件
+    + /etc/logrotate.conf
+        + weekly daily
+        + rotate
+        + create
+        + compress
+        + 外部命令
+            + sharedscripts
+            + endscript
+            + prerotate
+            + postrotate
+        + include /etc/logrotate.d/ 读入该目录下的所有配置一起执行
+    + /etc/logrotate.d/
+3. 文件名**后缀数字越小**，代表记录的是**越新的**日志数据
++ **自定义**日志文件的**轮替功能**
+1. 对文件新建**+a属性** `chattr +a ${logfile}`
+2. 在/etc/logrotate.d/新建conf文件 `vim /etc/logrotate.d/${server}.conf`
++ logwatch：每天分析一次日志文件，并且将数据**以email的格式寄送给root**。
