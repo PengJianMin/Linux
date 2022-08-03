@@ -596,3 +596,6 @@
     + `make clean`：读取Makefile文件中关于clean的工作，去除**目标文件（*.o）**，源码中可能存在之前编译过的**目标文件（*.o）**
     + `make`：依据Makefile当中的默认工作进行编译，默认将编译完成后的可执行文件放到**当前目录**
     + `make install`：依据Makefile文件中关于install的选项，将编译后的数据安装到**对应的目录**中去
+8. Tarball软件**管理建议**
+    + 安装的软件一般放置在`/usr/local`，源码放置在`/usr/local/src`
+    + 
