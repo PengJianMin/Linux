@@ -355,6 +355,9 @@
 # 软件磁盘阵列（Software RAID）（未完成）
 # 逻辑卷管理器（Logical Volume Manager）（未完成）
 # 例行性工作（crontab）（未完成）
++ 仅**执行一次**的工作调度
+
+
 # 程序管理与SELinux初探
 + for-and-exec流程
 1. 系统先以fork的方式复制一个与父进程相同的**暂存进程**，这个进程与父进程**唯一的区别**就是PID不同。
