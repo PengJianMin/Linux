@@ -633,6 +633,17 @@
     + 内含程序类型：**未编译的源代码**
     + **可以**修改参数并编译
 + **YUM**在线升级：解决RPM**属性依赖问题**
+    + yum的配置文件 **/etc/yum.repos.d/* **
+    + 查询功能：yum \[list|info|search|provides|whatprovides]
+        + `yum search raid` 搜索磁盘阵列（raid）**相关的软件**有哪些
+        + `yum info mdadm` 找出mdadm这个软件的功能为何，相关信息
+        + `yum list` 找出**yum服务器**上面提供的所有软件名称
+        + `yum upgrade` 列出**yum服务器**上可供本机升级的软件有哪些
+        + `yum provides passwd` 列出提供**passwd这个文件**的软件有哪些
+    + 安装/升级功能：yum \[install|upgrade]
+        + `yum insatll pam-devel`
+        + `yum remove pam-devel`
+    + 
 + rpm：RPM软件管理程序
     + RPM安装（install） `rpm -ivh` `rpm --prefix 新路径` `rpm --nosignature`
         + \-v：查看更详细的安装信息页面
