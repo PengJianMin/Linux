@@ -566,3 +566,6 @@
 1. 对文件新建**+a属性** `chattr +a ${logfile}`
 2. 在/etc/logrotate.d/新建conf文件 `vim /etc/logrotate.d/${server}.conf`
 + logwatch：每天分析一次日志文件，并且将数据**以email的格式寄送给root**。
+# 源码与Tarball
++ Linux系统真正识别的可执行文件是**二进制文件**
++ 软件程序的源代码为纯文本文档 + 利用已经存在的函数库 ➡️ 生成可执行文件为**binary file**
