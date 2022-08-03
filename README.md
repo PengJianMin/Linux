@@ -633,7 +633,7 @@
     + 内含程序类型：**未编译的源代码**
     + **可以**修改参数并编译
 + **YUM**在线升级：解决RPM**属性依赖问题**
-    + yum的配置文件 **/etc/yum.repos.d/* **
+    + yum的配置文件 **/etc/yum.repos.d/* 
     + 查询功能：yum \[list|info|search|provides|whatprovides]
         + `yum search raid` 搜索磁盘阵列（raid）**相关的软件**有哪些
         + `yum info mdadm` 找出mdadm这个软件的功能为何，相关信息
@@ -643,7 +643,10 @@
     + 安装/升级功能：yum \[install|upgrade]
         + `yum insatll pam-devel`
         + `yum remove pam-devel`
-    + 
+    + RPM软件属性依赖位置：`yum repolist all` `yum clean`
+    + 全系统自动升级
+        + `vim /etc/crontab` `crontab -e`
+        + 0 3 * * * /usr/bin/yum -y update
 + rpm：RPM软件管理程序
     + RPM安装（install） `rpm -ivh` `rpm --prefix 新路径` `rpm --nosignature`
         + \-v：查看更详细的安装信息页面
@@ -664,4 +667,12 @@
     + RPM卸载与重建数据库（erase/rebuilddb）`rpm -e pam` `rpm --rebuilddb`
         + RPM数据库/var/lib/rpm
 # Linux备份策略
-        
+1. 备份资料的考虑
+    + 硬件问题
+    + 软件问题 `rm -rf /home`
+2. 备份方式
+    + 增量备份：系统进行完第一次完整备份后，经过一段时间的运行，比较系统与备份文件的差异，仅备份有差异的文件而已。之后每一次备份都只备份当前系统**与上一次备份时间点的系统**之间的差异。即**当前时间点**与**上一次的时间点**
+    + 差异备份：每次备份都是与**原始的完整备份比较**的结果，即**当前时间点**与**最初时间点**。
+3. rsync：**远程备份**  需要先有远程服务器的**免密登录**权限
+    + rsync -av -e ssh $basedir ${id}@${host}:${remotedir}
+    + rsync -av -e ssh /data/elesev/weekly elese@192.168.0.100:/home/elesev
