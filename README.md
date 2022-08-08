@@ -116,6 +116,13 @@
 + 文本**语系**编码转换
 1. `iconv --list` 列出指出的语系数据       
 2. `iconv -f 原本编码 -t 新编码 filename [-o newfile]`
+# 认识和学习Bash
+
+
+
+
+
+
 
 
 
