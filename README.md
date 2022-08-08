@@ -113,8 +113,9 @@
     + `UNIX2dos` `UNIX2dos -k man.config`
     + `-k`：保留该文件原本的mtime时间格式
     + `-n`：保留原本的旧文件，转换后的内容输出到新文件 `dos2UNIX -n ${old} ${new}`
-        
-
++ 文本**语系**编码转换
+1. `iconv --list` 列出指出的语系数据       
+2. `iconv -f 原本编码 -t 新编码 filename [-o newfile]`
 
 
 
