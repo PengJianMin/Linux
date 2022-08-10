@@ -135,18 +135,10 @@ shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
 1. `type cd` builtin
 2. `type docker` docker is /usr/bin/docker
 + shell的**变量**功能
-1. **环境**变量
-    + 环境变量通常以**大写字符**来表示，以区分**自定义**变量
-    + 环境变量的**功能**
-        + null
-2. `$PATH` 
-    + 系统通过PATH变量里面的内容所记录的**路径顺序**来查找命令
-        + 如果找完PATH变量内的路径还找不到命令，则会显示"command not found"
-    + 决定某个命令能否在**任何目录**下执行 
-3. 变量的**显示**（$和${}都有**取值**功能） `echo` 
+1. `echo` 变量的**显示**（$和${}都有**取值**功能）  
     + 变量名称前加上$即可：`echo $var`
     + 变量名称用${}**包围**即可：`echo ${var}`
-4. 变量的**设置**与**取消** `set`和`unset` 
+2. `set`和`unset` 变量的**设置**与**取消** `set`和`unset` 
     + 在bash当中，一个变量名称**尚未被设置**时，**默认**内容是“空”，echo该变量不显示任何信息
     + 变量的设置规则
         + 变量与变量内容以一个等号“=”来连接`myname=Eleseven`
@@ -176,7 +168,18 @@ export name
 bash
 echo ${name}
 ```
-
+3. 环境变量
+    + `env` 查看环境变量
+        + `$HOME`
+        + `$SHELL`
+        + `$HISTSIZE`
+        + `$MAIL`
+        + `$PATH`
+            + 系统通过PATH变量里面的内容所记录的**路径顺序**来查找命令
+            + 如果找完PATH变量内的路径还找不到命令，则会显示"command not found"
+            + 决定某个命令能否在**任何目录**下执行
+        + `$LANG`
+        + `$RANDOM`
 
 
 
