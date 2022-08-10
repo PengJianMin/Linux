@@ -143,10 +143,10 @@ shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
     + 系统通过PATH变量里面的内容所记录的**路径顺序**来查找命令
         + 如果找完PATH变量内的路径还找不到命令，则会显示"command not found"
     + 决定某个命令能否在**任何目录**下执行 
-3. `echo` 变量的**显示**
+3. 变量的**显示**（$和${}都有**取值**功能） `echo` 
     + 变量名称前加上$即可：`echo $var`
     + 变量名称用${}**包围**即可：`echo ${var}`
-4. `set`和`unset` 变量的**设置**与**取消**
+4. 变量的**设置**与**取消** `set`和`unset` 
     + 在bash当中，一个变量名称**尚未被设置**时，**默认**内容是“空”，echo该变量不显示任何信息
     + 变量的设置规则
         + 变量与变量内容以一个等号“=”来连接`myname=Eleseven`
@@ -165,9 +165,17 @@ shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
         + 若该变量需要在其他**子进程**执行，则需要以**export**来使变量**变成环境变量**   `export PATH`
         + 通常大写字符为**系统默认**变量，**自行设置变量**可以使用小写字符，方便判断(改规则**非强制**)
         + **取消变量**的方法为使用`unset 变量名称` `unset myname`
+        + 单引号和双引号的最大不同在于双引号**仍然可以**保有变量的内容，但单引号内**只能是**一般字符，不会有特殊符号
+```
+name="Eleseven's name" //单引号会失效，所以是正确的
+name=Eleseven\'\ name //把'和空格转义了
 
+PATH=$PATH:/home/bin
 
-
+export name
+bash
+echo ${name}
+```
 
 
 
