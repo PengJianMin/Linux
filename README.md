@@ -117,8 +117,38 @@
 1. `iconv --list` 列出指出的语系数据       
 2. `iconv -f 原本编码 -t 新编码 filename [-o newfile]`
 # 认识和学习Bash
-
-
++ /etc/shells
+    + 系统上**合法的**shell要写入该文件
+    + 系统服务在运行过程中，会去检查**用户能够使用**的shells，就需要借助/etc/shells的内容进行判断
++ /etc/passwd 每一行最后一个字段记录了该用户**登录时**的**默认**shell
+```
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+···
+```
++ `type`：判断**命令**是否为bash shell的**内置（builtin）** 命令
+1. `type cd` builtin
+2. `type docker` docker is /usr/bin/docker
++ shell的**变量**功能
+1. **环境**变量
+    + 环境变量通常以**大写字符**来表示，以区分**自定义**变量
+    + 环境变量的**功能**
+        + null
+2. `$PATH` 
+    + 系统通过PATH变量里面的内容所记录的**路径顺序**来查找命令
+        + 如果找完PATH变量内的路径还找不到命令，则会显示"command not found"
+    + 决定某个命令能否在**任何目录**下执行 
+3. `echo` 变量的**显示**
+    + 变量名称前加上$即可：`echo $var`
+    + 变量名称用${}**包围**即可：`echo ${var}`
+4. `set`和`unset` 变量的**设置**与**取消**
+    + 
+    
 
 
 
