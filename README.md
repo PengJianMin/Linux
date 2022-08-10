@@ -265,7 +265,7 @@ echo ${name}
     unalias lm
    ```
 + `history` 显示历史命令
-1. `~/.bash_history` 该文件记录**当前用户**的命令历史
+1. `~/.bash_history` 该文件记录**当前用户**的命令历史，会有**安全隐患**
 2. 缺点是**无法记录**时间
 3. ```
     history
