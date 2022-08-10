@@ -436,9 +436,9 @@ echo ${name}
     + **只能针对自己创建的文件或目录进行删除、重命名、移动等操作，无法删除他人文件。**
 4. 通过chmod命令更改，在之前的三个数字前**再加上一个数字**，该数字代表特殊权限。 `chmod 6755 test` 
 + 查看文件类型
-    1. file：`file /usr/bin/passwd`
+1. file：`file /usr/bin/passwd`
 + 寻找“执行文件”
-    1. which：默认查找PATH内所规范的目录 `which cd`
+1. which：默认查找PATH内所规范的目录 `which cd`
 + 文件名的查找
 1. 通常先使用`whereis`或者`locate`来检查，速度更快，查不到了再用`find`
 2. `whereis`和`locate`查找**数据库/var/lib/mlocate**，`find`查找硬盘
