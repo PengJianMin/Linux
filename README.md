@@ -285,7 +285,6 @@ echo ${name}
 3. ```
     read aTest ; echo $aTest
     read -p "Please enter you name:" -t 30 named;echo named
-  ```
 + `declare/typeset` 声明变量的**类型**
 1. `-x`：将后面的变量声明为**环境变量**
 2. `-a`：声明为**数组（array）**
@@ -299,7 +298,7 @@ echo ${name}
     var[1]="small min"
     var[2]="big min"
     echo ${var[1]}
-  ```
+ 
 + `ulimit` bash限制用户的某些**系统资源**，如可以**打开的文件数量、可以使用的CPU时间、可以使用的内存总量等等**
 1. `ulimit -a`
 2. `ulimit -f 10240` 如果是**一般用户**，只能**继续减小**文件容量，不能增加文件容量
@@ -313,7 +312,6 @@ echo ${name}
     path=$PATH
     echo ${path#/*:} //仅删除第一个路径
     echo ${path##/*:} //仅剩下最后一个路径
-  ```
 + 变量**内容**的**替代**
 1. `/` 替换**第一个**符合模式的字符
 2. `//` 替换**所有**符合模式的字符
@@ -321,7 +319,6 @@ echo ${name}
     echo ${var/old/new}
     echo ${path/sbin/SBIN}
     echo ${path//sbin/SBIN}
-  ```
 + 变量的**测试**与**内容**的**替换**
 1. “判断”某个变量是否存在，**存在**则**使用**既有的设置，**不存在**则**给予**一个常用的设置
 2. ps：规则较多，**上网查阅**即可
@@ -362,7 +359,6 @@ echo ${name}
     cat > testFile << eof //输入eof结束输入
 
     find /home -name .bashrc 2> /dev/null
-  ```
 5. 标准**输入**（stdin）：代码为0，使用`<`或`<<`
     + 原本**需要键盘**输入的数据该为**由文件内容**来代替
     + ```
