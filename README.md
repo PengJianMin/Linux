@@ -430,6 +430,7 @@ echo ${name}
         + ```
             cat /etc/man/config | wc // 行 字 字符数 
             last | grep [a-zA-Z] | grep -v Elesev | wc -l 
+            wc -l /etc/man/config
 3. **`tee`** **双向**重定向，多用于**管道**命令
     + `tee`会**同时**将数据送到**文件**和**屏幕（stdout）**
     + ```
