@@ -381,7 +381,7 @@ echo ${name}
 ```
 # 管道命令
 + 区别于**连续执行**命令
-+ 注意事项
++ **注意事项**（**底层**理解）
 1.管道命令“|” **仅能**处理经由**前面一个**命令传来的**正确信息**，也就是stdout信息，对于std**err**信息**没有**直接处理的能力
 2.管道后面接的**第一个数据**必定是“命令”，**而且**这个命令**必须要**能够接收**stdin的数据**，这样的命令才是**管道命令**
     + 管道命令：`less` `more` `tail` `head` 等等
@@ -430,8 +430,69 @@ echo ${name}
         + ```
             cat /etc/man/config | wc // 行 字 字符数 
             last | grep [a-zA-Z] | grep -v Elesev | wc -l 
-3. **`tee`** **双向**重定向
-    + 
+3. **`tee`** **双向**重定向，多用于**管道**命令
+    + `tee`会**同时**将数据送到**文件**和**屏幕（stdout）**
+    + ```
+        last | tee last.list | cut -d " " -f 1
+        ll /home | tee ~/homefile | more //覆盖文件
+        ll /home | tee -a ~/homefile | more //累加
+    + 很多认证考试的**考点**
+4. **`tr` `col` `join` `paste` `expand`** **字符转换**命令
+    + **`tr`** 删除或替换
+        + `-d` 删除
+        + `-s` 替换
+        + ```
+            last | tr [a-z] [A-Z] //小写字符转换成大写
+            cat /etc/passwd | tr -d ':' //删除所有':'
+            cat myWindowsFomatFile | tr -d '\r' > myLinuxFormatFile //删除 windows断行符号 "^M"
+    + **`col`** 特殊键处理
+        + `-x` 将**tab键**转为对等的**空格键**
+        + `-b` 文字内有反斜杠（/），仅保留反斜杠**最后接**的那个字符
+    + **`join`** 将**两个**文件中，有**相同数据**的**那一行**加在一起（**相关性**）
+        + 默认以**空格符**作为分隔符，并根据**第一个字段**进行对比
+        + `-t` 指定分隔符
+        + `-i` 忽略大小写
+        + `-1` 指定**第一个文件**的哪个字段来分析
+        + `-2` 指定**第二个文件**的哪个字段来分析
+        + ```
+            join -t ':' /etc/passwd /etc/shadow
+            join -t ':' -1 4 /etc/passwd -2 3 /etc/group //第一个文件的第4个字段 第二个文件的第3个字段 相同时进行合并
+    + **`paste`** 直接将两行贴在一起，且中间**以[tab]键**隔开（**不考虑**相关性）
+        + `-d` 指定贴合的分隔符
+        + `-` 指来自stdin的数据**充当**file
+        + ```
+            cat /etc/group | paste /etc/passwd  /etc/shadow - | head -n 3
+    + **`expand`** 将[tab]键转成空格键，可以通过`-t`指定转换比例关系
+5. **`split`** 文件/内容 **切割**
+    + 将一个大文件依据**文件大小**或**行数**切割成小文件     
+    + `-b` 指定切割成的文件大小，如**b,k,m**等
+    + `-l` 按指定**行数**进行切割
+    + **最后一个参数**为**切割后**的**文件名**的**前缀prefix**
+    + ```
+        cd /tmp; split -b 300k /etc/termcap termcap // termcapa、termcapb...
+        ls -al / | split -l 10 - lsroot //如果需要stdout/stdin时又没有文件，-会被视为 stdin或stdout
+6. **`xargs`** **参数**代换，产生某个**命令的参数**
+    + `xargs`本身是**命令**，不是**后面接的命令**的参数。可以说，后面接的命令**才是**xargs的参数
+    + `xargs`可以**读入stdin**的数据，并且以**空格符**或**断行字符**进行分辨，将stdin的数据**分隔**称为arguments
+    + 使得很多**不支持管道**的命令**配合上`xargs`**就可以使用了
+    + `-0` 将特殊字符转为一般字符，用于**特殊状态**
+    + `-e` 后面接一字符串，xargs分析到该字符串时即**停止继续**分析
+    + `-p` 执行每个参数时，会**询问**用户
+    + `-n` 指定使用的**参数个数**，每次command命令执行时，要使用几个
+    + ```
+        cut -d ':' -f 1 /etc/passwd | head -n 3 | xargs finger
+        cut -d ':' -f 1 /etc/passwd | head -n 3 | xargs -p finger
+        cut -d ':' -f 1 /etc/passwd | head -n 3 | xargs -p -e 'el' finger
+        
+        find /sbin -perm +7000 | ls -l //仅列出当前目录下
+        find /sbin -perm +7000 | xargs ls -l //列出满足要求的
+ + 管道命令中的**减号`-`**
+ 1. 如果需要stdout/stdin时又没有文件，`-`会被视为 stdin或stdout
+ 2. ```
+    ls -al / | split -l 10 - lsroot
+    cat /etc/group | paste /etc/passwd /etc/shadow - | head -n 3
+    tar -czvf - /home | tar -xvzf - 
+    
 # 计算机概论
 + 文件大小使用**二进制**，速度单位使用**十进制**
 1. 文件大小：1 KB = 1024 B = 2^10 B
@@ -648,7 +709,7 @@ echo ${name}
 1. head：取出前面几行 `head -n 100` `head -n -100`
     + **负数**指**扣掉**文件*末尾*的100行，只取剩下的前面的所有数据行。  
 2. tail：取出后面几行 `tail -n 100` `tail -n +100` `tail -f log.txt`
-    + **正数**指第100行**以后**的所有数据
+    + **正数**指**第**100行**以后**的所有数据
     + \-f：监测日志文件，**常用于查看是否有请求打进来**。
 3. od：非纯文本文件（如二进制文件binary） `od -t c /usr/bin/passwd`
 + 文件时间
