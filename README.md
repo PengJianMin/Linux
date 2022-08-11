@@ -131,14 +131,52 @@ sync:x:5:0:sync:/sbin:/bin/sync
 shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
 ···
 ```
++ Bash shell的操作**环境**
+1. 查找命令的**顺序**，优先级**从高到低**为：
+    + 以**相对/绝对路径**执行命令，例如`/bin/ls`或`./ls`
+    + 由`alias`找到该命令
+    + 由bash**内置（builtin）** 的命令来执行
+    + 通过$PATH这个变量的顺序找到的**第一个命令**来执行
+2. `/etc/issue` `/etc/motd` bash的登录与**欢迎**信息
+3. `/etc/profile` `~/.bash_profile` `~./bash_login` `~/.profile` Bash的**环境配置** 
+    + 一进入bash就有一堆**有用变量**是因为系统有一些**配置文件**的存在，bash在**启动时**直接读取这些配置文件（**只在**启动时读取，**之后更改**配置文件**不会生效**的原因，除非用`source`命令让其**实时生效**），配置文件可以分为**全体系统**的配置文件和**用于个人偏好**的配置文件
+    + **命令别名**、**自定义变量**在你退出bash后就会**失效**，如果要**保留**设置，则必须讲这些设置**写入**配置文件
+    + **login** shell 与 **non-login** shell
+        + login shell 需要完整登录流程（账号密码等）；non_login shell不需要（例如在原本bash下启动第二个bash子进程，就不用输入账号密码）
+        + login shell 和 non-login shell 读取的配置文件**不一样**
+    + **`/etc/profile`**（login shell**才会**读）
+        + **每个用户**登录取得bash时**一定会读取**的配置文件
+        + 本身**也是shellscript**，如果添加**权限x直接执行**也可以执行，但是**不会生效**，还是要通过`source /etc/profile`使得配置在**当前shell**生效
+            + shellscript的执行时创建一个**子shell并在其中执行**，执行结束后**子shell退出**，自定义变量和一些配置也**随之失效**，但**执行结果**会返回**标准输出**，又因为父shell和子shell**共用一个标准输出**，会造成**似乎**是在父shell中执行一样
+            + `source shellscript`会让脚本在**当前shell**执行，因此/etc/profile中设置的变量会生效
+        + 主要设置变量有：
+            + `$PATH`
+            + `$MAIL`
+            + `$USER`
+            + `$HOSTNAME`
+            + `$HISTSIZE`
+    + **`~/.bash_profile`**（login shell**才会**读）
+        + bash**先读取**`/etc/profile`，**再读取**`~/.bash_profile`
+        + `~/.bash_profile` `~./bash_login` `~/.profile` 从左往右优先**只读取一个**，**上一个**存在则读取**结束**，不存在则**接着找**下一个
++ **`source`** 读入环境配置文件（也可以作为**执行shellscript**的命令，注意这种执行方式的**效果**，详见shellscript部分）
+1. `/etc/profile`和`~/.bash_profile`是在取得login shell的时候**才会**读取的配置文件，所以如果有**修改文件**，通常是得**注销bash再登录**后**该配置才会生效**，如果希望不注销再登录就让其在**当前环境生效**，可以使用`source`或`.`
+```
+source /etc/profile
+. /etc/profile
+source ~/.bash_profile
+. ~/.bash_profile
+
+chmod +x /etc/profile
+/etc/profile //可以执行，但是无法在当前环境生效
+```
 + `type`：判断**命令**是否为bash shell的**内置（builtin）** 命令
-1. `type cd` builtin
-2. `type docker` docker is /usr/bin/docker
+3. `type cd` builtin
+4. `type docker` docker is /usr/bin/docker
 + shell的**变量**功能
-1. `echo` 变量的**显示**（$和${}都有**取值**功能）  
+5. `echo` 变量的**显示**（$和${}都有**取值**功能）  
     + 变量名称前加上$即可：`echo $var`
     + 变量名称用${}**包围**即可：`echo ${var}`
-2. `set`和`unset` 变量的**设置**与**取消** `set`和`unset` 
+6. `set`和`unset` 变量的**设置**与**取消** `set`和`unset` 
     + 在bash当中，一个变量名称**尚未被设置**时，**默认**内容是“空”，echo该变量不显示任何信息
     + 变量的设置规则
         + 变量与变量内容以一个等号“=”来连接`myname=Eleseven`
@@ -273,21 +311,6 @@ echo ${name}
     !! //执行上一条命令
     !find //执行最近以find开头的命令
    ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # 计算机概论
 + 文件大小使用**二进制**，速度单位使用**十进制**
 1. 文件大小：1 KB = 1024 B = 2^10 B
