@@ -677,7 +677,7 @@ echo ${name}
     + `-f`：强制删除force
     + `-r`：递归删除
 5. **`mv`**：移动文件与目录，或**更名** `mv old new`
-    + **`rename`**同样可以更名
+    + **`rename`** 同样可以更名
 6. **`basename`**：取得路径的文件名与目录名称 **`basename path`** **`dirname path`**
     + `basename` 取得路径的**最后一项** `basename /etc/sysconfig/network`  ➡️  `network`
     + `dirname` **除去**路径的最后一项剩下的 `dirname /etc/sysconfig/network` ➡️  `/etc/sysconfig`
