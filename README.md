@@ -158,6 +158,7 @@ shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
     + **`~/.bash_profile`**（login shell**才会**读）
         + bash**先读取**`/etc/profile`，**再读取**`~/.bash_profile`
         + `~/.bash_profile` `~./bash_login` `~/.profile` 从左往右优先**只读取一个**，**上一个**存在则读取**结束**，不存在则**接着找**下一个
+    + **`~/.bashrc`**（non-login shell**只会**读该文件）
 + **`source`** 读入环境配置文件（也可以作为**执行shellscript**的命令，注意这种执行方式的**效果**，详见shellscript部分）
 1. `/etc/profile`和`~/.bash_profile`是在取得login shell的时候**才会**读取的配置文件，所以如果有**修改文件**，通常是得**注销bash再登录**后**该配置才会生效**，如果希望不注销再登录就让其在**当前环境生效**，可以使用`source`或`.`
 ```
@@ -169,14 +170,24 @@ source ~/.bash_profile
 chmod +x /etc/profile
 /etc/profile //可以执行，但是无法在当前环境生效
 ```
++ bash的**默认组合键**
+1. `[Ctrl]+C` 终止目前命令
+2. `[Ctrl]+D` **输入**结束（**EOF**）
+3. `[Ctrl]+M` 就是Enter
+4. `[Ctrl]+S` 暂停**屏幕的输出**
+5. `[Ctrl]+Q` 恢复**屏幕的输出**
+6. **`[Ctrl]+U`** 在提示符下，**将整行**命令删除
+7. `[Ctrl]+Z` 暂停目前的命令
+
+
 + `type`：判断**命令**是否为bash shell的**内置（builtin）** 命令
-3. `type cd` builtin
-4. `type docker` docker is /usr/bin/docker
+1. `type cd` builtin
+2. `type docker` docker is /usr/bin/docker
 + shell的**变量**功能
-5. `echo` 变量的**显示**（$和${}都有**取值**功能）  
+1. `echo` 变量的**显示**（$和${}都有**取值**功能）  
     + 变量名称前加上$即可：`echo $var`
     + 变量名称用${}**包围**即可：`echo ${var}`
-6. `set`和`unset` 变量的**设置**与**取消** `set`和`unset` 
+2. `set`和`unset` 变量的**设置**与**取消** `set`和`unset` 
     + 在bash当中，一个变量名称**尚未被设置**时，**默认**内容是“空”，echo该变量不显示任何信息
     + 变量的设置规则
         + 变量与变量内容以一个等号“=”来连接`myname=Eleseven`
