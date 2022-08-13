@@ -493,7 +493,9 @@ echo ${name}
     ls -al / | split -l 10 - lsroot
     cat /etc/group | paste /etc/passwd /etc/shadow - | head -n 3
     tar -czvf - /home | tar -xvzf - 
-    
+# 正则表达式
+
+
 # 计算机概论
 + 文件大小使用**二进制**，速度单位使用**十进制**
 1. 文件大小：1 KB = 1024 B = 2^10 B
