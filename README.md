@@ -500,47 +500,83 @@ echo ${name}
     tar -czvf - /home | tar -xvzf - 
 # 正则表达式
 + 正则表达式是以**行**为单位进行字符串处理行为，通过一些**特殊符号**的辅助，可以轻易达到**查找、删除、替换**某特定字符串的效果
-    + **注意**，缩写的正则表达式如果**没有显式说明**行首或行尾，都**默认**是从**行首**起匹配
-        + '^...' '...$' 显式说明
-        + '...' 默认从开头开始匹配
-            + `grep -n [^A-Z] regular_express.txt` 会把**所有行**都列出，**达不到**把含有大写字母的行剔除的效果，因为只**默认从行首校验**，其它部分含有的大写字母校验不到。
+    + **注意**，grep命令的功能是判断该**行中**是否含有**指定模式（行首行尾的位置也是模式的一种）**的**字符串**
 + 英文大小写编码顺序
 1. **`LANG=C`** 时：0 1 2 3 4 ...A B C D ...Z a b c d ... z
 2. **`LANG=zh_CN`** 时：0 1 2 3 4 ... aA bB cC dD ... zZ
 + `LANG=C` **特殊**符号
-    + `[:alnum:]` 代表英文大小写字符及数字，即0-9，A-Z，a-z
-    + `[:alpha:]` 代表任何英文大小写字符，即A-Z，a-z
-    + `[:blank:]` 代表`空格键`**与**`[Tab]按键`
-    + `[:cntrl:]` 代表键盘上面的控制按键，即包括CR，LF，Tab，Del等
-    + `[:digit:]` 代表数字而已，即0-9
-    + `[:graph:]` **除了**空格符（空格键与[Tab]按键）外的其他所有按键
-    + `[:lower:]` 代表小写字符，即a-z
-    + `[:print:]` 代表任何可以被打印出来的字符
-    + `[:punct:]` 代表标点符号（punctuation symbol)，即"?l::#$
-    + `[:upper:]` 代表大写字符，即A-Z
-    + `[:space:]` **任何**会产生空白的字符，包括空格键[Tab]CR等
-    + `[:xdigit:]` 代表十六进制的**数字类型**，因此包括0-9，A-F，a-f的数字与字符
+1. `[:alnum:]` 代表英文大小写字符及数字，即0-9，A-Z，a-z
+2. `[:alpha:]` 代表任何英文大小写字符，即A-Z，a-z
+3. `[:blank:]` 代表`空格键`**与**`[Tab]按键`
+4. `[:cntrl:]` 代表键盘上面的控制按键，即包括CR，LF，Tab，Del等
+5. `[:digit:]` 代表数字而已，即0-9
+6. `[:graph:]` **除了**空格符（空格键与[Tab]按键）外的其他所有按键
+7. `[:lower:]` 代表小写字符，即a-z
+8. `[:print:]` 代表任何可以被打印出来的字符
+9. `[:punct:]` 代表标点符号（punctuation symbol)，即"?l::#$
+10. `[:upper:]` 代表大写字符，即A-Z
+11. `[:space:]` **任何**会产生空白的字符，包括空格键[Tab]CR等
+12. `[:xdigit:]` 代表十六进制的**数字类型**，因此包括0-9，A-F，a-f的数字与字符
 + 基础正则表达式**字符**
-    + **`^`** 待查找的字符串在**行首**  
-        + `grep -n '^#' regular_express.txt` 查找行首为#开始的那一行，并列出行号
-    + **`$`**  待查找的字符串在**行尾**
-        + `grep -n '!$"regular_express.txt` 将行尾为!的那一行打印出来，并列出行号
-    + **`.`**  代表一定有**一个任意**字符的字符
-        + `grep -n 'e.e' regular_express.txt` 查找的字符串可以是(eve)(eae)(eee)(ee)，但**不能仅有(ee)！**即e与e中间·一定仅有一个字符，而**空格符也是字符**
-    + **`\`** 转义字符，将特殊符号的**特殊意义去除**
-        + `grep -n \' regular_express.txt` 查找含有单引号'的那一行
-    + **`*`** 重复**零个到无穷多个**的**前一个**字符 
-        + `grep -n 'ess*' regular_express.txt` 找出含有**(es)**(ess)(esss)等的字符串，注意，因为“可以是0个，所以es也是符合待查找字符串。另外，因为*为**重复** “前一个RE字符”的符号，因此，在*之前**必须要紧接**着一个RE字符喔！例如任意字符则为“t” 
-    + **`[list]`**  从字符集合的RE字符里面找出**一个**想要选取的字符
-        + grep -n 'g[ld]' regular_express.txt 查找含有（gl）或（gd)的那一行，需要特别留意的是，在[]当中代表**一个**待查找的字符，例如“a[afil]y”代表查找的字符串可以是aay，afy，aly即[afl]代表a或f或|的意思
-    + **`[n1-n2]`**  从字符集合的RE字符里面找出**一个**对应**范围**的字符
-        + `grep -n [0-9] regular_express.txt` 查找含有任意数字的那一行。
-        + 需特别留意，在字符集合[]中的**减号-**是有**特殊意义**的，它代[n1-n2] 表两个字符之间的**所有连续**字符。但这个连续与否**与ASCII编码有关**，因此，你的编码需要**设置正确**(在bash当中，需要确定**LANG与LANGUAGE的变量**是否正确），例如所有大写字符[A-Z]
-    + **`[^list]`**  **不要**让字符集合的RE字符出现在该位置**一次**（**取反**）
-        + `grep -n 'oo[^t]' regular_express.txt` 查找的字符串可以是(oog)(ood)但不能是(oot)，那个在[]内时代表的意义是“反向选择”的意思。
-        + 需要特别注意的是，如果以`grep -n [“A-Z] regular_express.txt`来查找，却发现该文件内的所有行都被列出，为什么？因为这个[”A-Z]是“非大写字符”的意思，因为每一行均有非大写字符，例如第一行的"Open Source就有pe，n，o等小写字符
-    + **`\{n,m\}`** **连续**n到m个的前一个RE字符，若为 **`\{n\}`** 则是**连续n个**的前一个RE字符，若为 **`\{n,\}`** 则是连续 **n个以上** 的**前一个**RE字符 
-        + `grep -n 'go\{2,3\}g' regular_express.txt` 在g与g之间有2个到3个的o存在的字符串，即(goog)(gooog)
+1. **`^`** 待查找的字符串在**行首**  
+    + `grep -n '^#' regular_express.txt` 查找行首为#开始的那一行，并列出行号
+2. **`$`**  待查找的字符串在**行尾**
+    + `grep -n '!$"regular_express.txt` 将行尾为!的那一行打印出来，并列出行号
+3. **`.`**  代表一定有**一个任意**字符的字符
+    + `grep -n 'e.e' regular_express.txt` 查找的字符串可以是(eve)(eae)(eee)(ee)，但**不能仅有(ee)！**即e与e中间·一定仅有一个字符，而**空格符也是字符**
+4. **`\`** 转义字符，将特殊符号的**特殊意义去除**
+    + `grep -n \' regular_express.txt` 查找含有单引号'的那一行
+5. **`*`** 重复**零个到无穷多个**的**前一个**字符 
+    + `grep -n 'ess*' regular_express.txt` 找出含有**(es)**(ess)(esss)等的字符串，注意，因为“可以是0个，所以es也是符合待查找字符串。另外，因为*为**重复** “前一个RE字符”的符号，因此，在*之前**必须要紧接**着一个RE字符喔！例如任意字符则为“t” 
+6. **`[list]`**  从字符集合的RE字符里面找出**一个**想要选取的字符
+    + grep -n 'g[ld]' regular_express.txt 查找含有（gl）或（gd)的那一行，需要特别留意的是，在[]当中代表**一个**待查找的字符，例如“a[afil]y”代表查找的字符串可以是aay，afy，aly即[afl]代表a或f或|的意思
+7. **`[n1-n2]`**  从字符集合的RE字符里面找出**一个**对应**范围**的字符
+    + `grep -n [0-9] regular_express.txt` 查找含有任意数字的那一行。
+    + 需特别留意，在字符集合[]中的**减号-**是有**特殊意义**的，它代[n1-n2] 表两个字符之间的**所有连续**字符。但这个连续与否**与ASCII编码有关**，因此，你的编码需要**设置正确**(在bash当中，需要确定**LANG与LANGUAGE的变量**是否正确），例如所有大写字符[A-Z]
+8. **`[^list]`**  **不要**让字符集合的RE字符出现在该位置**一次**（**取反**）
+    + `grep -n 'oo[^t]' regular_express.txt` 查找的字符串可以是(oog)(ood)但不能是(oot)，那个在[]内时代表的意义是“反向选择”的意思。
+    + 需要特别注意的是，如果以`grep -n [“A-Z] regular_express.txt`来查找，却发现该文件内的所有行都被列出，为什么？因为这个[”A-Z]是“非大写字符”的意思，因为每一行均有非大写字符，例如第一行的"Open Source就有pe，n，o等小写字符
+9. **`\{n,m\}`** **连续**n到m个的前一个RE字符
+    + 若为 **`\{n\}`** 则是**连续n个**的前一个RE字符
+    + 若为 **`\{n,\}`** 则是连续 **n个以上** 的**前一个**RE字符 
+    + `grep -n 'go\{2,3\}g' regular_express.txt` 在g与g之间有2个到3个的o存在的字符串，即(goog)(gooog)
++ **`grep`**
+1. `grep`命令的功能是判断一**行中**是否含有**指定模式（行首行尾的位置也是模式的一种）**的**字符串**，有的话则把**行**查找出来并显示
+    + 如果**显式说明**位置（`^` `$`），则默认为**任意位置** 
+    + `grep`的**最终目标是行**
+2. 命令实例
+```
+    dmesg | grep -n -A3 -B2 --color=auto
+    grep -n 'the' regular_express.txt
+    grep -nv 'the' regular_express.txt
+    grep -n 't[ae]est' regular_express.txt
+    grep -n 'oo' regular_express.txt
+    grep -n '[^g]oo' regular_express.txt
+    grep -n '[^a-z]oo' regular_express.txt
+    grep -n '[0-9]' regular_express.txt
+    
+    //以下注意格式
+    grep -n '[^[:lower:]]oo' regular_express.txt
+    grep -n '[[:digit:]]' regular_express.txt
+    
+    grep -n '^the' regular_express.txt
+    grep -n '^[a-z]' regular_express.txt
+    
+    grep -n '\.$' regular_express.txt
+    
+    //去掉空白行和注释行
+    grep -v '^$' /etc/syslog.conf | grep -v '^#'
+    
+    grep -n 'g..d' regular_express.txt
+    grep -n 'ooo*' regular_express.txt
+    grep -n 'goo*g' regular_express.txt
+    grep -n 'g*g' regular_express.txt
+    grep -n 'g.*g' regular_express.txt
+    grep -n '[0-9][0-9]*' regular_express.txt
+    grep -n 'o\{2\}' regular_express.txt
+    grep -n 'go\{2,5\}g' regular_express.txt
+    grep -n 'go\{2,\}g' regular_express.txt
+```
 # 计算机概论
 + 文件大小使用**二进制**，速度单位使用**十进制**
 1. 文件大小：1 KB = 1024 B = 2^10 B
