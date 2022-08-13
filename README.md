@@ -402,6 +402,11 @@ echo ${name}
         + `-v` **反向**选择，查找**不包含**关键字的行
         + `-n` 输出该行在原文件中的**行号**
         + `--color=auto` 关键字部分**显示颜色**
+            + 让颜色显示**长期生效**
+                + ```
+                    vim ~/.bashrc | vim /etc/profile
+                    alias grep='grep --color=auto'
+                  ```
         + ```
             last | grep "root" | cut -d ' ' -f 1
 2. **`sort` `uniq` `wc`** **排序**命令
@@ -494,7 +499,22 @@ echo ${name}
     cat /etc/group | paste /etc/passwd /etc/shadow - | head -n 3
     tar -czvf - /home | tar -xvzf - 
 # 正则表达式
-
++ 英文大小写编码顺序
+1. **`LANG=C`** 时：0 1 2 3 4 ...A B C D ...Z a b c d ... z
+2. **`LANG=zh_CN`** 时：0 1 2 3 4 ... aA bB cC dD ... zZ
++ `LANG=C` **特殊**符号
+    + `[:alnum:]` 代表英文大小写字符及数字，即0-9，A-Z，a-z
+    + `[:alpha:]` 代表任何英文大小写字符，即A-Z，a-z
+    + `[:blank:]` 代表`空格键`**与**`[Tab]按键`
+    + `[:cntrl:]` 代表键盘上面的控制按键，即包括CR，LF，Tab，Del等
+    + `[:digit:]` 代表数字而已，即0-9
+    + `[:graph:]` **除了**空格符（空格键与[Tab]按键）外的其他所有按键
+    + `[:lower:]` 代表小写字符，即a-z
+    + `[:print:]` 代表任何可以被打印出来的字符
+    + `[:punct:]` 代表标点符号（punctuation symbol)，即"?l::#$
+    + `[:upper:]` 代表大写字符，即A-Z
+    + `[:space:]` **任何**会产生空白的字符，包括空格键[Tab]CR等
+    + `[:xdigit:]` 代表十六进制的**数字类型**，因此包括0-9，A-F，a-f的数字与字符
 
 # 计算机概论
 + 文件大小使用**二进制**，速度单位使用**十进制**
