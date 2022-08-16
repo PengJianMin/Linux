@@ -847,51 +847,60 @@ echo ${name}
 4. **`find`**：`find / -name passwd` `find /var -type f` `find / -perm 555` `find / -size +1000k` `find ./ -name "*.log" -exec rm -rf {}\;` `find / -atime +4`
     + `-exec`：对查找结果进行**额外动作**，`{}`表示其中查找结果中的一条纪录，必须以`\;`结尾
 # linux磁盘与文件系统管理
++ 系统读取文件
+1. 先通过文件名**找到inode**，并**分析inode**所记录的权限与用户是否符合，若符合才能够开始**实际读取bloc**k的内容
+2. **目录树**和文件的关系
+    + **新建目录**时，ext2会分配一个i-node和至少一块block给目录
+        + i-node记录该目录的**相关权限与属性**，并可以记录分配到的那块block的**号码**
+        + 分配的block**中**，记录这个**目录下**的文件名和**该文件占用**的i-node
+3. **从2可知**
+    + **目录也是一个文件**
+    + **文件名和i-node的对应关系被记录在目录的block中**
 + 文件系统的运行：
-1. super block：纪录此文件系统的**整体信息**，包括index/block的总量、使用量、剩余量，以及文件系统的格式与相关信息等。
-2. i-node：记录文件的**属性**，一个文件占用一个i-node，同时记录此文件的**数据所在的block号码**；
-3. block：实际记录文件的内容，若文件太大时，会占用多个block。
-4. 如果能找到文件的i-node的话，就能知道这个文件所放置的block号码，就能读出该文件的实际数据了。
-5. Ext2为索引式文件系统。
-6. FAT格式文件系统（U盘、闪存）**没有i-node存在**，每个block号码都记录在前一个block当中，类似链表，读取效率差，会导致**磁盘碎片**
+5. super block：纪录此文件系统的**整体信息**，包括index/block的总量、使用量、剩余量，以及文件系统的格式与相关信息等。
+6. i-node：记录文件的**属性**，一个文件占用一个i-node，同时记录此文件的**数据所在的block号码**；
+7. block：实际记录文件的内容，若文件太大时，会占用多个block。
+8. 如果能找到文件的i-node的话，就能知道这个文件所放置的block号码，就能读出该文件的实际数据了。
+9. Ext2为索引式文件系统。
+10. FAT格式文件系统（U盘、闪存）**没有i-node存在**，每个block号码都记录在前一个block当中，类似链表，读取效率差，会导致**磁盘碎片**
 + Ext2文件系统
-1. data block
+11. data block
     + 大小有：1KB 2KB 4KB
     + 文件大小大于block的大小，则一个文件会占用多个block数量
     + 文件大小小于block的大小，则该block剩余空间就不能够再被利用（**磁盘空间浪费**）
     + block的大小和数量在格式化完就不能再改变（除非重新格式化）
-2. i-node table
+12. i-node table
     + 每个i-node大小均固定为 **128bytes**
     + 记录一个block号码要花费**4bytes**
-3. i-node/block与**文件大小**的关系
+13. i-node/block与**文件大小**的关系
     + 一个i-node分为**4个区域**（以1KB的block为例）
         + 12个**直接记录区**：直接记录12个block号码。12 * 1KB = 12KB
         + 1个**间接记录区**：记录1个block号码，这个block再去记录block号码。 1 * (1KB/4B) * 1KB = 256KB
         + 1个**双间接记录区**：记录1个block号码，这1个block的数据依然是block号码，再往下的block依然记录的是block号码。1 * (1KB/4B) * (1KB/4B) * 1KB = 256 * 256 KB
         + 1个**三间接记录区**: 记录1个block号码，这1个block的数据依然是block号码，再往下的block依然记录的是block号码，再再往下的block依然记录的是block号码。1 * (1KB/4B) * (1KB/4B) * (1KB/4B) * 1KB = 256 * 256 * 256 KB
         + 总额：12 + 256 + 256 * 256 + 256 * 256 * 256 = 16GB，所以如果将data block设置成1KB的话，文件系统能够容纳的**最大文件**为16GB。 
-4. **`dumpe2fs`**：查看设备的文件系统信息 `dumpe2fs /dev/hdc2`
-5. **`df`**：调出目前挂载的设备 `df -h` `df -h /` 
+14. **`dumpe2fs`**：查看设备的文件系统信息 `dumpe2fs /dev/hdc2`
+15. **`df`**：调出目前挂载的设备 `df -h` `df -h /` 
 + 文件系统的简单操作
-1. **`df`**：列出文件系统的整体磁盘使用量 `df -h /etc` `df -i`
+16. **`df`**：列出文件系统的整体磁盘使用量 `df -h /etc` `df -i`
     + `/proc`挂载在内存当中，没有占据任何硬盘空间
     + `/dev/shm` 是**利用内存虚拟出来的磁盘空间**，这个目录下的任何数据文件的**访问速度非常快速**（在内存工作），**断电**后内容会消失
-2. **`du`**：评估文件系统的磁盘使用量（常用于评估目录）`du -sh /etc` `du -m`
+17. **`du`**：评估文件系统的磁盘使用量（常用于评估目录）`du -sh /etc` `du -m`
 + **`ln 目标文件 连接源文件`** 连接文件
-1. 硬链接（hard link） **`ln 源文件 目标文件`** 
+18. 硬链接（hard link） **`ln 源文件 目标文件`** 
     + 新建一个文件名连接到某一个i-node上，不会增加i-node，也不会耗用block数量
     + 如果你将任何一个“文件名”删除，其实i-node与block**都还是存在的**，此时可以通过另一个“文件名”来读取到正确的文件数据
-2. 软链接（Symbolic link） 符号链接，也即快捷方式 **`ln -s 源文件 目标文件`** 
-    + symbolic link是创建一个**独立的文件**，指向**它链接的那个文件的文件名**
+19. 软链接（Symbolic link） 符号链接，也即快捷方式 **`ln -s 源文件 目标文件`** 
+    + symbolic link是创建一个**独立的文件**，这个文件会让**数据读取操作**指向它连接的那个文件的**文件名**指向**
     + 当源文件被删除之后，symbolic link文件会**“无法打开”**
     + symbolic link所创建的文件为一个独立的新的文件，会**占用掉i-node与block**
 + 磁盘的分区、格式化、检验与挂载
-1. 向系统新增硬盘的流程
+20. 向系统新增硬盘的流程
     + 对磁盘进行分区，以新建可用分区
-    + 对*该分区*进行格式化（format），以创建系统可用的文件系统
+    + 对**该分区**进行格式化（format），以创建系统可用的文件系统
     + 对刚才新建好的文件系统进行检验
     + 在Linux系统上，创建挂载点（也即目录），并将它挂载上来
-2. **`fdisk`**：**磁盘分区**，**只有root权限**才可以执行，设备名**不带数字**。 `fdisk /dev/hdc` `fdisk -l /dev/hdc 该命令仅查看信息，不操作磁盘` `partprobe`
+21. **`fdisk`**：**磁盘分区**，**只有root权限**才可以执行，设备名**不带数字**。 `fdisk /dev/hdc` `fdisk -l /dev/hdc 该命令仅查看信息，不操作磁盘` `partprobe`
     + `m`：命令介绍
     + `d`：删除一个分区
     + `n`：新增一个分区
@@ -899,27 +908,27 @@ echo ${name}
     + `q`：退出，之前的所有操作**都不生效**
     + `w`：写入分区表，之前的所有操作**都生效**
     + **partprobe** w后要强制让**内存**更新分区表。
-3. **`mkfs`**：进行**文件系统的格式化**，设备名**带数字**，表示对某一分区格式化文件系统。 `mkfs -t ext3 /dev/hdc6`
-4. **`mke2fs`**：可以制定blcok大小和i-node数量,设备名**带数字**。`mke2fs -j -L "test" -b 2048 -i 8192 /dev/hdc6`
-5. **`fsck`，`badblocks`**：**磁盘检验**，设备名**带数字** `fsck -C -f -t ext3 /dev/hdc6` `badlocks -sv /dev/hdc6`
-6. **`mount`，`umount`**：**磁盘挂载与卸载**，设备名**带数字** `mount -a` `mount /dev/hdc6 /home/elesev` `mount -l` `umount /home/elesev` `umount /dev/hdc6` `mount -L "elesev" /home/elesev`
+22. **`mkfs`**：进行**文件系统的格式化**，设备名**带数字**，表示对某一分区格式化文件系统。 `mkfs -t ext3 /dev/hdc6`
+23. **`mke2fs`**：可以制定blcok大小和i-node数量,设备名**带数字**。`mke2fs -j -L "test" -b 2048 -i 8192 /dev/hdc6`
+24. **`fsck`，`badblocks`**：**磁盘检验**，设备名**带数字** `fsck -C -f -t ext3 /dev/hdc6` `badlocks -sv /dev/hdc6`
+25. **`mount`，`umount`**：**磁盘挂载与卸载**，设备名**带数字** `mount -a` `mount /dev/hdc6 /home/elesev` `mount -l` `umount /home/elesev` `umount /dev/hdc6` `mount -L "elesev" /home/elesev`
     + 单一文件系统不应该被重复挂载在不同的挂载点（目录）
     + 单一目录不应该重复挂载多个文件系统
     + 作为挂载点的目录理论上应该都是**空目录**
     + `-a`：依照配置文件/etc/fstab的数据将所有未挂载的磁盘都挂载上来
     + `-l`：显示目前挂载的信息
     + `-L`：利用**卷标名称**进行挂载
-7. **`e2label`**：设置**文件系统卷标**（Lable）`e2label /dev/hdc6 "elesev"`
+26. **`e2label`**：设置**文件系统卷标**（Lable）`e2label /dev/hdc6 "elesev"`
 + 开机挂载
-1. 关机后**挂载失效**，开机后系统**自动进行挂载**。
-2. **`/etc/fstab(file system table)`** 是mount命令执行时，所有参数会写入的文件。
-3. 每次开机会根据`/etc/fstab`中的配置自动进行挂载，可以**直接编辑**此文件。
-4. `/etc/fstab`输入有误导致无法开机成功，进入**单用户维护模式**。 使用命令 **`mount -n -o remount,rw /`** ，再重新编辑/etc/fstab
+27. 关机后**挂载失效**，开机后系统**自动进行挂载**。
+28. **`/etc/fstab(file system table)`** 是mount命令执行时，所有参数会写入的文件。
+29. 每次开机会根据`/etc/fstab`中的配置自动进行挂载，可以**直接编辑**此文件。
+30. `/etc/fstab`输入有误导致无法开机成功，进入**单用户维护模式**。 使用命令 **`mount -n -o remount,rw /`** ，再重新编辑/etc/fstab
 + **`mkswap` `swapon`** 内存交换空间（swap）的构建 **`mkswap /dev/hdc7` `free -h` `free -m` `swapon /dev/hdc7` **
-1. swap是**利用硬盘**来暂时存放**内存**中的信息。
-2. swapon 启用内存交换空间
-3. 最多创建32个swap
-4. 64位最大内存寻址到64GB，swap总量最大也是仅能达64GB。
+31. swap是**利用硬盘**来暂时存放**内存**中的信息。
+32. swapon 启用内存交换空间
+33. 最多创建32个swap
+34. 64位最大内存寻址到64GB，swap总量最大也是仅能达64GB。
 # 文件与文件系统的压缩与打包（文件系统也可以打包）
 + **`tar`** 
 1. `tar -vtf` 
